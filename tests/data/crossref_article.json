@@ -1,0 +1,73 @@
+{
+  "volume": "163",
+  "publisher": "Elsevier BV",
+  "DOI": "10.1016/j.jpeds.2013.06.032",
+  "subtitle": [],
+  "member": "http://id.crossref.org/member/78",
+  "author": [
+    {
+      "given": "Mandy B.",
+      "family": "Belfort"
+    },
+    {
+      "given": "Matthew W.",
+      "family": "Gillman"
+    },
+    {
+      "given": "Stephen L.",
+      "family": "Buka"
+    },
+    {
+      "given": "Patrick H.",
+      "family": "Casey"
+    },
+    {
+      "given": "Marie C.",
+      "family": "McCormick"
+    }
+  ],
+  "URL": "http://dx.doi.org/10.1016/j.jpeds.2013.06.032",
+  "issued": {
+    "date-parts": [
+      [
+        2013,
+        12
+      ]
+    ]
+  },
+  "reference-count": 43,
+  "title": "Preterm Infant Linear Growth and Adiposity Gain: Trade-Offs for Later Weight Status and Intelligence Quotient",
+  "ISSN": [
+    "0022-3476"
+  ],
+  "source": "CrossRef",
+  "prefix": "http://id.crossref.org/prefix/10.1016",
+  "score": 1.0,
+  "deposited": {
+    "timestamp": 1385078400000,
+    "date-parts": [
+      [
+        2013,
+        11,
+        22
+      ]
+    ]
+  },
+  "type": "journal-article",
+  "container-title": "The Journal of Pediatrics",
+  "indexed": {
+    "timestamp": 1400829313642,
+    "date-parts": [
+      [
+        2014,
+        5,
+        23
+      ]
+    ]
+  },
+  "issue": "6",
+  "page": "1564-1569.e2",
+  "subject": [
+    "Pediatrics, Perinatology, and Child Health"
+  ]
+}

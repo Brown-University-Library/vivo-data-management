@@ -1,0 +1,41 @@
+from utils import get_env
+
+
+#Namespaces
+from rdflib import Graph, Namespace
+from rdflib.namespace import NamespaceManager, ClosedNamespace
+
+#setup namespaces
+#code inspired by / borrowed from https://github.com/libris/librislod
+#local data namespace
+D = Namespace(get_env('DATA_NAMESPACE'))
+
+VIVO = Namespace('http://vivoweb.org/ontology/core#')
+VITROPUBLIC = Namespace('http://vitro.mannlib.cornell.edu/ns/vitro/public#')
+VITRO = Namespace('http://vitro.mannlib.cornell.edu/ns/vitro/0.7#')
+DCTERMS = Namespace('http://purl.org/dc/terms/')
+BIBO = Namespace('http://purl.org/ontology/bibo/')
+FOAF = Namespace('http://xmlns.com/foaf/0.1/')
+SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
+#local ontology
+BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
+#aleas for now.
+BU = D
+BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
+
+namespaces = {}
+for k, o in vars().items():
+    if isinstance(o, (Namespace, ClosedNamespace)):
+        namespaces[k] = o
+
+ns_mgr = NamespaceManager(Graph())
+for k, v in namespaces.items():
+    ns_mgr.bind(k.lower(), v)
+
+rq_prefixes = u"\n".join("prefix %s: <%s>" % (k.lower(), v)
+                         for k, v in namespaces.items())
+
+prefixes = u"\n    ".join("%s: %s" % (k.lower(), v)
+                          for k, v in namespaces.items()
+                          if k not in u'RDF RDFS OWL XSD')
+#namespace setup complete

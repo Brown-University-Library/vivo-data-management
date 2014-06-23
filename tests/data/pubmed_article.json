@@ -1,0 +1,173 @@
+{
+    "header": {
+        "type": "esummary",
+        "version": "0.3"
+    },
+    "result": {
+        "uids": [
+            "23910982"
+        ],
+        "23910982": {
+            "uid": "23910982",
+            "pubdate": "2013 Dec",
+            "epubdate": "2013 Jul 30",
+            "source": "J Pediatr",
+            "authors": [
+                {
+                    "name": "Belfort MB",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Gillman MW",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Buka SL",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Casey PH",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "McCormick MC",
+                    "authtype": "Author",
+                    "clusterid": ""
+                }
+            ],
+            "lastauthor": "McCormick MC",
+            "title": "Preterm infant linear growth and adiposity gain: trade-offs for later weight status and intelligence quotient.",
+            "sorttitle": "preterm infant linear growth and adiposity gain trade offs for later weight status and intelligence quotient ",
+            "volume": "163",
+            "issue": "6",
+            "pages": "1564-1569.e2",
+            "lang": [
+                "eng"
+            ],
+            "nlmuniqueid": "0375410",
+            "issn": "0022-3476",
+            "essn": "1097-6833",
+            "pubtype": [
+                "Journal Article",
+                "Multicenter Study"
+            ],
+            "recordstatus": "PubMed - indexed for MEDLINE",
+            "pubstatus": "256",
+            "articleids": [
+                {
+                    "idtype": "pubmed",
+                    "idtypen": 1,
+                    "value": "23910982"
+                },
+                {
+                    "idtype": "pii",
+                    "idtypen": 4,
+                    "value": "S0022-3476(13)00791-9"
+                },
+                {
+                    "idtype": "doi",
+                    "idtypen": 3,
+                    "value": "10.1016/j.jpeds.2013.06.032"
+                },
+                {
+                    "idtype": "pmc",
+                    "idtypen": 8,
+                    "value": "PMC3834090"
+                },
+                {
+                    "idtype": "mid",
+                    "idtypen": 8,
+                    "value": "NIHMS500519"
+                },
+                {
+                    "idtype": "eid",
+                    "idtypen": 8,
+                    "value": "23910982"
+                },
+                {
+                    "idtype": "rid",
+                    "idtypen": 8,
+                    "value": "23910982"
+                },
+                {
+                    "idtype": "pmcid",
+                    "idtypen": 5,
+                    "value": "pmc-id: PMC3834090;manuscript-id: NIHMS500519;embargo-date:2014/12/01;"
+                }
+            ],
+            "history": [
+                {
+                    "pubstatus": "received",
+                    "date": "2013/03/15 00:00"
+                },
+                {
+                    "pubstatus": "revised",
+                    "date": "2013/05/01 00:00"
+                },
+                {
+                    "pubstatus": "accepted",
+                    "date": "2013/06/18 00:00"
+                },
+                {
+                    "pubstatus": "aheadofprint",
+                    "date": "2013/07/30 00:00"
+                },
+                {
+                    "pubstatus": "entrez",
+                    "date": "2013/08/06 06:00"
+                },
+                {
+                    "pubstatus": "pmc-release",
+                    "date": "2014/12/01 00:00"
+                },
+                {
+                    "pubstatus": "pubmed",
+                    "date": "2013/08/06 06:00"
+                },
+                {
+                    "pubstatus": "medline",
+                    "date": "2014/01/28 06:00"
+                }
+            ],
+            "references": [
+                {
+                    "refsource": "J Pediatr. 2013 Dec;163(6):1543-5",
+                    "reftype": "Comment in",
+                    "pmid": 24018016,
+                    "note": ""
+                }
+            ],
+            "attributes": [
+                "Has Abstract"
+            ],
+            "pmcrefcount": 1,
+            "fulljournalname": "The Journal of pediatrics",
+            "elocationid": "doi: 10.1016/j.jpeds.2013.06.032",
+            "viewcount": 780,
+            "doctype": "citation",
+            "srccontriblist": [
+            ],
+            "booktitle": "",
+            "medium": "",
+            "edition": "",
+            "publisherlocation": "",
+            "publishername": "",
+            "srcdate": "",
+            "reportnumber": "",
+            "availablefromurl": "",
+            "locationlabel": "",
+            "doccontriblist": [
+            ],
+            "docdate": "",
+            "bookname": "",
+            "chapter": "",
+            "sortpubdate": "2013/12/01 00:00",
+            "sortfirstauthor": "Belfort MB"
+        }
+    }
+}
+
