@@ -1,7 +1,5 @@
 language: python
-env:
-  - CFLAGS="-O0"
-  - D="http://vivo.school.edu/individual/"
+env: D="http://vivo.school.edu/individual/"
 python:
   - 2.6
   - 2.7
