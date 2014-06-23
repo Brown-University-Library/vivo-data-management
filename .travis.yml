@@ -1,5 +1,5 @@
 language: python
-env: D="http://vivo.school.edu/individual/"
+env: DATA_NAMESPACE="http://vivo.school.edu/individual/"
 python:
   - 2.6
   - 2.7
