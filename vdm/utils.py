@@ -21,5 +21,5 @@ def scrub_doi(val):
     return v.strip()
 
 def pull(meta, k):
-    f = lambda x: None if x is u'' else x
+    f = lambda x: None if str(x) is '' else x
     return f(meta.get(k))

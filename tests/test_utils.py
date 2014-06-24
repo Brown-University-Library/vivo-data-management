@@ -27,3 +27,23 @@ def test_pull():
     assert(
         pull(d, 'mykey') == 'Value'
     )
+    d['key2'] = ''
+    assert(
+        pull(d, 'key2') is None
+    )
+    d['key3'] = u''
+    assert(
+        pull(d, 'key3') is None
+    )
+
+
+def test_get_env():
+    from vdm.utils import get_env
+    import os
+    os.environ['TMP'] = 'pytest'
+    assert(
+        get_env('TMP') == 'pytest'
+    )
+    os.environ.pop('TMP')
+    with pytest.raises(Exception):
+        get_env('TMP')
