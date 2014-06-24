@@ -62,7 +62,6 @@ class TestArticle(BTest):
         meta = article.prep(self.meta, venue_uri=venue_uri)
         g = article.to_graph(meta)
         g.namespace_manager = ns_mgr
-        print g.serialize(format='n3')
         #check venue
         rq = """
         select ?venue
