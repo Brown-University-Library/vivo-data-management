@@ -14,7 +14,7 @@ class TestArticle(BTest):
         self.meta = raw
 
     def test_meta(self):
-        pub = Publication(self.doi)
+        pub = Publication()
         prepped = pub.prep(self.meta)
         #print pub.to_graph(prepped).serialize(format='n3')
         prepped['title'] = u'Preterm Infant Linear Growth and Adiposity Gain: Trade-Offs for Later Weight Status and Intelligence Quotient'
@@ -23,7 +23,7 @@ class TestArticle(BTest):
         prepped['pages'] = u'1564-1569.e2'
 
     def test_rdf(self):
-        article = Publication(self.doi)
+        article = Publication()
         meta = article.prep(self.meta)
         g = article.to_graph(meta)
         g.namespace_manager = ns_mgr

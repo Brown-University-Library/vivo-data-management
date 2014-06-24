@@ -42,9 +42,27 @@ def get_citeproc(doi):
         logging.error(e)
         return
 
+
+class CrossRefSearchException(Exception):
+    pass
+
+
+def metadata_search(search_string):
+    """
+    Search the metadata API.
+    """
+    base = "http://search.crossref.org/dois?q={0}".format(search_string)
+    resp = requests.get(base)
+    data = resp.json()
+    if len(data) == 0:
+        raise CrossRefSearchException("No CR metadata search results")
+    else:
+        return data
+
+
 class Publication(object):
-    def __init__(self, doi):
-        self.doi = doi
+    def __init__(self):
+        pass
 
     def meta(self):
         raw = get_citeproc()
@@ -79,10 +97,10 @@ class Publication(object):
             d['a'] = 'bcite:Citation'
         return d
 
-
     def prep(self, meta, pub_uri=None, venue_uri=None):
         bib = {}
-        bib['doi'] = pull(meta, 'DOI')
+        doi = pull(meta, 'DOI')
+        bib['doi'] = doi
 
         #pub type
         ptype = self.pub_types(meta)
@@ -102,7 +120,7 @@ class Publication(object):
         try:
             bib['date'] = date
         except Exception, e:
-            logging.warn("Can't create date for {}.".format(self.doi))
+            logging.warn("Can't create date for {}.".format(doi))
             logging.warn(e)
 
         #venue

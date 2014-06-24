@@ -3,6 +3,7 @@ from pprint import pprint
 import os
 
 from .tutils import load, BTest
+from dateutil import parser
 
 from vdm.pubmed import Pubmed
 from vdm.namespaces import ns_mgr, BCITE, D
@@ -14,7 +15,7 @@ class TestArticle(BTest):
         self.meta = raw_data['result'][self.pmid]
 
     def test_meta(self):
-        article = Pubmed(self.pmid)
+        article = Pubmed()
         prepped = article.prep(self.meta)
         self.eq(
             u'Preterm infant linear growth and adiposity gain: trade-offs for later weight status and intelligence quotient.',
@@ -26,9 +27,13 @@ class TestArticle(BTest):
         )
         self.eq(u'163', prepped['volume'])
 
+        date = parser.parse(prepped['date'])
+        self.eq(2013, date.year)
+        self.eq(12, date.month)
+
     def test_rdf(self):
         pub_uri = D['n123']
-        article = Pubmed(self.pmid)
+        article = Pubmed()
         meta = article.prep(self.meta, pub_uri=pub_uri)
         g = article.to_graph(meta)
         g.namespace_manager = ns_mgr
@@ -51,7 +56,7 @@ class TestArticle(BTest):
 
     def test_rdf_venue_uri(self):
         venue_uri = D['v123']
-        article = Pubmed(self.pmid)
+        article = Pubmed()
         meta = article.prep(self.meta, venue_uri=venue_uri)
         g = article.to_graph(meta)
         g.namespace_manager = ns_mgr

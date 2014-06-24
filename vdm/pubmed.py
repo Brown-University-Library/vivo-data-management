@@ -32,11 +32,10 @@ def get_pubmed(pmid):
         raise Exception("No PMID found with this ID {}.".format(doc_url))
 
 class Pubmed(object):
-    def __init__(self, pmid):
-        self.id = pmid
+    def __init__(self):
+        pass
 
-    def fetch(self):
-        pmid = self.id
+    def fetch(self, pmid):
         doc_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=%s&retmode=json' % pmid
         resp = requests.get(doc_url)
         raw = resp.json()
@@ -59,6 +58,13 @@ class Pubmed(object):
             else:
                 d['a'] = "bcite:Citation"
         return d
+
+    def date(self, meta):
+        #date
+        spdate = meta.get('sortpubdate')
+        if spdate is not None:
+            return parse(spdate).isoformat()
+        return
 
     def prep(self, meta, pub_uri=None, venue_uri=None):
         """
@@ -90,10 +96,7 @@ class Pubmed(object):
             authors.append(au['name'])
         bib['authors'] = u", ".join(authors)
 
-        #date
-        spdate = bib.get('sortpubdate')
-        if spdate is not None:
-            bib['date'] = parse(spdate).isoformat()
+        bib['date'] = self.date(meta)
 
         venue = {}
         if venue_uri is not None:
