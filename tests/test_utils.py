@@ -18,3 +18,12 @@ def test_scrub_doi():
     assert(
         scrub_doi(d) == '10.1234'
     )
+
+
+def test_pull():
+    from vdm.utils import pull
+    d = {}
+    d['mykey'] = 'Value'
+    assert(
+        pull(d, 'mykey') == 'Value'
+    )
