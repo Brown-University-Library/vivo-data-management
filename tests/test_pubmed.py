@@ -2,6 +2,8 @@
 from pprint import pprint
 import os
 
+from rdflib import URIRef
+
 from .tutils import load, BTest
 from dateutil import parser
 
@@ -71,3 +73,31 @@ class TestArticle(BTest):
         """
         for row in g.query(rq):
             self.eq(u'The Journal of pediatrics', row.venue.toPython())
+
+    def test_contrib(self):
+        b = {}
+        uri = D['n123']
+        b['articleids'] = [{'idtype': 'pubmed', 'value': 'pm1234'}]
+        b['title'] = 'Sample article'
+
+        #Try coauthors created as just strings with @baseuris and
+        #as RDFLib URI objects.
+        ca1 = [
+            'jsmith',
+            'jjones'
+        ]
+        ca2 = [
+            D['jsmith'],
+            D['jjones']
+        ]
+        for coauthors in [ca1, ca2]:
+            pub = Publication()
+            prepped = pub.prep(b, pub_uri=uri, contributors=coauthors)
+            assert(coauthors[0] in prepped['contributor'])
+            assert(coauthors[1] in prepped['contributor'])
+
+            g = pub.to_graph(prepped)
+            #Test that all coathors are in the outputted RDF..
+            for ob in g.objects(subject=D['n123'], predicate=BCITE.hasContributor):
+                ca2.index(ob) > -1
+                assert(type(ob) == URIRef)

@@ -70,7 +70,7 @@ class Publication(object):
 
     def _author_list(self, meta):
         authors = []
-        for au in meta['author']:
+        for au in meta.get('author', []):
             astring = u"{0}, {1}".format(au.get('family'), au.get('given'))
             authors.append(astring)
         if authors == []:
@@ -80,10 +80,14 @@ class Publication(object):
 
     def _pub_date(self, meta):
         dval = meta.get('issued', {})
-        dparts = dval['date-parts'][0]
-        year = int(dparts[0])
+        dparts = dval.get('date-parts')
+        if dparts is None:
+            return
+        else:
+            dgrp = dparts[0]
+        year = int(dgrp[0])
         try:
-            month = int(dparts[1])
+            month = int(dgrp[1])
         except IndexError:
             month = 1
         return date(year=year, month=month, day=1)
@@ -97,10 +101,13 @@ class Publication(object):
             d['a'] = 'bcite:Citation'
         return d
 
-    def prep(self, meta, pub_uri=None, venue_uri=None):
+    def prep(self, meta, pub_uri=None, venue_uri=None, contributors=[]):
         bib = {}
         doi = pull(meta, 'DOI')
         bib['doi'] = doi
+
+        if pub_uri is not None:
+            bib['uri'] = pub_uri
 
         #pub type
         ptype = self.pub_types(meta)
@@ -114,6 +121,13 @@ class Publication(object):
 
         #author list
         bib['authors'] = self._author_list(meta)
+
+        #contributors
+        contrib = []
+        for ct in contributors:
+            contrib.append(ct)
+        bib['contributor'] = contrib
+
 
         #date
         date = self._pub_date(meta)

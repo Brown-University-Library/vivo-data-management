@@ -66,7 +66,7 @@ class Publication(object):
             return parse(spdate).isoformat()
         return
 
-    def prep(self, meta, pub_uri=None, venue_uri=None):
+    def prep(self, meta, pub_uri=None, venue_uri=None, contributors=[]):
         """
         Create JSON to pass to the context.
         """
@@ -92,16 +92,22 @@ class Publication(object):
 
         #Handle author list
         authors = []
-        for au in meta['authors']:
+        for au in meta.get('authors', []):
             authors.append(au['name'])
         bib['authors'] = u", ".join(authors)
+
+        #contributors
+        contrib = []
+        for ct in contributors:
+            contrib.append(ct)
+        bib['contributor'] = contrib
 
         bib['date'] = self.date(meta)
 
         venue = {}
         if venue_uri is not None:
             venue['uri'] = venue_uri
-        venue['label'] = meta['fulljournalname']
+        venue['label'] = meta.get('fulljournalname')
         venue['issn'] = pull(meta, 'issn')
         venue['eissn'] = pull(meta, 'essn')
         bib['venue'] = venue
