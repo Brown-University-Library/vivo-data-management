@@ -16,10 +16,10 @@ def scrub_doi(val):
     v = val.replace('http://dx.doi.org/', '')
     v = v.replace('dx.doi.org/', '')
     v = v.replace('doi:', '')
-    v = bleach.clean(v)
+    v = bleach.clean(v, strip=True)
     v = v.replace(' ', '')
     return v.strip()
 
-def pull(meta):
+def pull(meta, k):
     f = lambda x: None if x is u'' else x
-    return f(meta)
+    return f(meta.get(k))
