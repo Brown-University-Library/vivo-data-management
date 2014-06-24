@@ -31,7 +31,7 @@ def get_pubmed(pmid):
     else:
         raise Exception("No PMID found with this ID {0}.".format(doc_url))
 
-class Pubmed(object):
+class Publication(object):
     def __init__(self):
         pass
 
