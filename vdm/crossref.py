@@ -38,7 +38,7 @@ def get_citeproc(doi):
     try:
         return handle.json()
     except Exception, e:
-        logging.error("Bad DOI {}".format(doi))
+        logging.error("Bad DOI {0}".format(doi))
         logging.error(e)
         return
 
@@ -71,7 +71,7 @@ class Publication(object):
     def _author_list(self, meta):
         authors = []
         for au in meta['author']:
-            astring = u"{}, {}".format(au.get('family'), au.get('given'))
+            astring = u"{0}, {1}".format(au.get('family'), au.get('given'))
             authors.append(astring)
         if authors == []:
             return None
@@ -120,7 +120,7 @@ class Publication(object):
         try:
             bib['date'] = date
         except Exception, e:
-            logging.warn("Can't create date for {}.".format(doi))
+            logging.warn("Can't create date for {0}.".format(doi))
             logging.warn(e)
 
         #venue

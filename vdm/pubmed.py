@@ -29,7 +29,7 @@ def get_pubmed(pmid):
         meta = raw['result'][pmid]
         return meta
     else:
-        raise Exception("No PMID found with this ID {}.".format(doc_url))
+        raise Exception("No PMID found with this ID {0}.".format(doc_url))
 
 class Pubmed(object):
     def __init__(self):
@@ -43,7 +43,7 @@ class Pubmed(object):
             meta = raw['result'][pmid]
             return meta
         else:
-            raise Exception("No PMID found with this ID {}.".format(doc_url))
+            raise Exception("No PMID found with this ID {0}.".format(doc_url))
 
     def pub_types(self, meta):
         d = {}
@@ -78,10 +78,10 @@ class Pubmed(object):
         bib.update(ptype)
         #One to one mappings
         for k in ['title', 'volume', 'issue', 'pages']:
-            bib[k] = pull(meta.get(k))
+            bib[k] = pull(meta, k)
         #Identifiers
         for aid in meta.get('articleids', []):
-            value = pull(aid.get('value'))
+            value = pull(aid, 'value')
             id_type = aid.get('idtype')
             if id_type == 'pubmed':
                 bib['pmid'] = value
@@ -102,8 +102,8 @@ class Pubmed(object):
         if venue_uri is not None:
             venue['uri'] = venue_uri
         venue['label'] = meta['fulljournalname']
-        venue['issn'] = pull(meta.get('issn'))
-        venue['eissn'] = pull(meta.get('essn'))
+        venue['issn'] = pull(meta, 'issn')
+        venue['eissn'] = pull(meta, 'essn')
         bib['venue'] = venue
 
         c = {}

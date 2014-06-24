@@ -1,3 +1,4 @@
+bleach
 requests
 git+https://github.com/RDFLib/rdflib-jsonld.git
 pytest
