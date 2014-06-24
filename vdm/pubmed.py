@@ -29,7 +29,7 @@ def get_pubmed(pmid):
         meta = raw['result'][pmid]
         return meta
     else:
-        raise Exception("No PMID found with this ID {}.".format(doc_url))
+        raise Exception("No PMID found with this ID {0}.".format(doc_url))
 
 class Pubmed(object):
     def __init__(self, pmid):
@@ -44,7 +44,7 @@ class Pubmed(object):
             meta = raw['result'][pmid]
             return meta
         else:
-            raise Exception("No PMID found with this ID {}.".format(doc_url))
+            raise Exception("No PMID found with this ID {0}.".format(doc_url))
 
     def pub_types(self, meta):
         d = {}

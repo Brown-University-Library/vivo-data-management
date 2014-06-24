@@ -6,7 +6,7 @@ import bleach
 def get_env(name):
     val = os.getenv(name)
     if val is None:
-        raise Exception("Can't find envrionment variable {}.".format(name))
+        raise Exception("Can't find envrionment variable {0}.".format(name))
     return val
 
 def scrub_doi(val):

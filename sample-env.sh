@@ -1,1 +1,1 @@
-DATA_NAMESPACE='http://vivo.school.edu/individual/'
+export DATA_NAMESPACE='http://vivo.school.edu/individual/'
