@@ -34,7 +34,7 @@ setup(
     url = 'http://github.com/Brown-University-Library/vivo-data-management',
     author = 'Ted Lawless',
     author_email = 'tlawless@brown.edu',
-    py_modules = ['vdm',],
+    packages = ['vdm',],
     description = 'Tools for working with data for VIVO.',
     cmdclass = {'test': PyTest},
     install_requires=[
@@ -42,10 +42,10 @@ setup(
         'bleach',
         'python-dateutil',
         'rdflib>=4.1',
-        'rdflib_jsonld'
+        'rdflib-jsonld>=0.2-dev'
     ],
     dependency_links = [
-        'https://github.com/RDFLib/rdflib-jsonld/archive/master.zip#egg=rdflib_jsonld'
+        'https://github.com/RDFLib/rdflib-jsonld/zipball/master#egg=rdflib-jsonld-0.2-dev'
     ],
     tests_require=['pytest']
 )
