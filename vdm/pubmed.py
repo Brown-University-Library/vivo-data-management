@@ -39,7 +39,7 @@ class Publication(object):
         doc_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=%s&retmode=json' % pmid
         resp = requests.get(doc_url)
         raw = resp.json()
-        if raw is not None:
+        if raw.get('error') is None:
             meta = raw['result'][pmid]
             return meta
         else:
@@ -63,7 +63,7 @@ class Publication(object):
         #date
         spdate = meta.get('sortpubdate')
         if spdate is not None:
-            return parse(spdate).isoformat()
+            return parse(spdate)
         return
 
     def prep(self, meta, pub_uri=None, venue_uri=None, contributors=[]):
@@ -117,6 +117,14 @@ class Publication(object):
         c.update(context.publication)
         bib['@context'] = c
         return bib
+
+    def to_json(self, pmid):
+        """
+        Helper to process a PMID and conver to local JSON.
+        """
+        raw = self.fetch(pmid)
+        meta = self.prep(raw)
+        return meta
 
     def to_graph(self, prepped):
         g = to_rdf(prepped, Graph())

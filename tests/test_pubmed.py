@@ -29,7 +29,7 @@ class TestArticle(BTest):
         )
         self.eq(u'163', prepped['volume'])
 
-        date = parser.parse(prepped['date'])
+        date = prepped['date']
         self.eq(2013, date.year)
         self.eq(12, date.month)
 

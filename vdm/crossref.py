@@ -64,8 +64,8 @@ class Publication(object):
     def __init__(self):
         pass
 
-    def meta(self):
-        raw = get_citeproc()
+    def fetch(self, doi):
+        raw = get_citeproc(doi)
         return raw
 
     def _author_list(self, meta):
@@ -150,6 +150,14 @@ class Publication(object):
         c.update(context.publication)
         bib['@context'] = c
         return bib
+
+    def to_json(self, doi):
+        """
+        Helper to process a DOI and conver to local JSON.
+        """
+        raw = self.fetch(doi)
+        meta = self.prep(raw)
+        return meta
 
     def to_graph(self, prepped):
         g = to_rdf(prepped, Graph())
