@@ -162,6 +162,15 @@ class VIVOBackend(BaseBackend):
         return True
 
 
+class FusekiGraph(ConjunctiveGraph):
+    """
+    Connect to a Fueski VIVO instance.
+    """
+    def __init__(self, endpoint):
+        ConjunctiveGraph.__init__(self, 'SPARQLStore')
+        self.open(endpoint)
+        self.namespace_manager=ns_mgr
+
 class VIVOEditError(Exception):
     def __init__self(self, message, Errors):
         #http://stackoverflow.com/questions/1319615/proper-way-to-declare-custom-exceptions-in-modern-python
