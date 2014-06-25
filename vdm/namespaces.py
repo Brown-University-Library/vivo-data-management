@@ -4,6 +4,7 @@ from utils import get_env
 #Namespaces
 from rdflib import Graph, Namespace
 from rdflib.namespace import NamespaceManager, ClosedNamespace
+from rdflib import RDFS
 
 #setup namespaces
 #code inspired by / borrowed from https://github.com/libris/librislod
@@ -24,7 +25,6 @@ AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
 #local ontologies
 BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
 BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
-
 
 namespaces = {}
 for k, o in vars().items():
