@@ -41,3 +41,12 @@ publication = {
     }
 }
 
+#Brown delegate editors
+delegate = {
+    "first": "foaf:firstName",
+    "last": "foaf:lastName",
+    "short_id": "blocal:shortId",
+    "ou": "blocal:orgUnit",
+    "netId": "blocal:netId",
+}
+
