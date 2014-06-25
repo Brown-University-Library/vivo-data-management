@@ -17,9 +17,14 @@ DCTERMS = Namespace('http://purl.org/dc/terms/')
 BIBO = Namespace('http://purl.org/ontology/bibo/')
 FOAF = Namespace('http://xmlns.com/foaf/0.1/')
 SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
+
+#ARQ functions
+AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
+
 #local ontologies
 BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
 BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
+
 
 namespaces = {}
 for k, o in vars().items():
