@@ -9,19 +9,25 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 
+SERVICE_URL = 'http://profiles.catalyst.harvard.edu/services/GetPMIDs/default.asp'
+
 class DisambiguationEngine(object):
     """
     Make and post documents to the disambiguation engine.
     http://profiles.catalyst.harvard.edu/docs/ProfilesRNS_DisambiguationEngine.pdf
     """
     def __init__(self):
+        """
+        Initialize.  Sets a default threshold score.
+        """
         self.threshold_score = '0.98'
         self.affiliation_strings = []
         self.require_first_name = 'false'
 
     def do(self, *args):
         """
-        Helper to call the service with the given args.
+        Helper to call the service with the given args.  Will
+        assemble and post the document to the web service.
         """
         doc = self.build_doc(*args)
         pubs = self.post(doc)
@@ -29,10 +35,10 @@ class DisambiguationEngine(object):
 
     def post(self, xml):
         """
-        Post the given doc to the service and get back
-        a list of Pubmed IDs.
+        Post the given doc to the service, parese the returned
+        PMIDs into a list, and return list.
         """
-        url = 'http://profiles.catalyst.harvard.edu/services/GetPMIDs/default.asp'
+        url = SERVICE_URL
         headers = {'Content-Type': 'text/xml'}
         resp = requests.post(url, data=xml, headers=headers)
         logger.debug("Disambiguation service status code.", resp.status_code)
@@ -50,6 +56,7 @@ class DisambiguationEngine(object):
             known_pubs,
             exclude_pubs):
         """
+        Build the XML document for the service.
         See structure at above url.
         """
         root = ET.Element("FindPMIDs")

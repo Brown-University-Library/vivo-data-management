@@ -1,16 +1,6 @@
 
 from vdm.catalyst import DisambiguationEngine
 
-def pretty(raw):
-    """
-    Pretty print xml.
-    """
-    import xml.dom.minidom
-    xml = xml.dom.minidom.parseString(raw)
-    pretty = xml.toprettyxml()
-    return pretty
-
-
 def test_profile():
     #Basic info about a person.
     p = [
