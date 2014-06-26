@@ -8,13 +8,6 @@ from rdflib import Graph
 from rdflib_jsonld.parser import to_rdf
 
 import requests
-#Cache if we can
-try:
-    import requests_cache
-    requests_cache.install_cache('/tmp/vdm_cache.sqlite')
-except ImportError:
-    pass
-
 
 #from context import base, publication, publication_venue
 import context
