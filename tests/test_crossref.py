@@ -1,12 +1,14 @@
 from pprint import pprint
 import json
 
-from rdflib import URIRef
+from rdflib import URIRef, RDFS
 
 from .tutils import load, BTest
 
-from vdm.crossref import get_citeproc, Publication
+from vdm.crossref import Publication
 from vdm.namespaces import ns_mgr, BCITE, D
+
+from datetime import date
 
 class TestArticle(BTest):
 
@@ -37,7 +39,10 @@ class TestArticle(BTest):
             ?venue bcite:issn ?issn .
         }
         """
-        for row in g.query(rq):
+        results = [r for r in g.query(rq)]
+        if results == []:
+            raise Exception("Query returned no results.")
+        for row in results:
             self.eq(u'0022-3476', row.issn.toPython())
 
     def test_contrib(self):
@@ -68,5 +73,36 @@ class TestArticle(BTest):
                 ca2.index(ob) > -1
                 assert(type(ob) == URIRef)
 
+class TestBook(BTest):
+
+    def setUp(self):
+        self.doi = '10.1093/acprof:oso/9780198240037.001.0001'
+        raw = load('crossref_book.json')
+        self.meta = raw
+
+    def test_meta(self):
+        pub = Publication()
+        prepped = pub.prep(self.meta)
+        assert(prepped['title'] == u"Pagan Virtue")
+        assert(prepped['doi'] == self.doi)
+        assert(prepped['date'] == date(1900, 1, 1))
+
+    def test_rdf(self):
+        #give book a URI
+        uri = D['n123']
+        pub = Publication()
+        prepped = pub.prep(self.meta)
+        prepped['uri'] = uri
+        g = pub.to_graph(prepped)
+        g.namespace_manager = ns_mgr
+        date_value = g.value(subject=uri, predicate=BCITE.date)
+        assert(date_value.toPython() == date(1900, 1, 1))
+
+        title = g.value(subject=uri, predicate=RDFS.label)
+        assert(title.toPython() == u"Pagan Virtue")
+
+        doi = g.value(subject=uri, predicate=BCITE.doi)
+        assert(doi.toPython() == self.doi)
+        #self.eq(1, 2)
 
 

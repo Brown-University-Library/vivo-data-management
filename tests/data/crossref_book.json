@@ -1,0 +1,50 @@
+{
+  "publisher": "Oxford University Press",
+  "DOI": "10.1093/acprof:oso/9780198240037.001.0001",
+  "subtitle": [],
+  "author": [
+    {
+      "given": "John",
+      "family": "Casey"
+    }
+  ],
+  "URL": "http://dx.doi.org/10.1093/acprof:oso/9780198240037.001.0001",
+  "issued": {
+    "date-parts": [
+      [
+        null
+      ]
+    ]
+  },
+  "reference-count": 0,
+  "title": "Pagan Virtue",
+  "member": null,
+  "source": "CrossRef",
+  "prefix": "none",
+  "score": 1.0,
+  "deposited": {
+    "timestamp": 1333670400000,
+    "date-parts": [
+      [
+        2012,
+        4,
+        6
+      ]
+    ]
+  },
+  "container-title": null,
+  "indexed": {
+    "timestamp": 1400268720261,
+    "date-parts": [
+      [
+        2014,
+        5,
+        16
+      ]
+    ]
+  },
+  "ISBN": [
+    "http://id.crossref.org/isbn/9780198240037"
+  ],
+  "type": "monograph"
+}

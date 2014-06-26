@@ -85,7 +85,12 @@ class Publication(object):
             return
         else:
             dgrp = dparts[0]
-        year = int(dgrp[0])
+        try:
+            year = int(dgrp[0])
+        except Exception:
+            #Some DOIs don't have dates issued.
+            #Set to 1900 so that we can track these down later.
+            return date(year=1900, month=1, day=1)
         try:
             month = int(dgrp[1])
         except IndexError:
