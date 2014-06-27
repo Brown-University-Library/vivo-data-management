@@ -5,7 +5,7 @@ Todo - load RDF into base backend to test add/remove features.
 """
 
 from rdflib import URIRef, Graph, RDF, RDFS, Literal
-from rdflib.compare import graph_diff
+from rdflib.compare import similar
 
 from vdm.backend import BaseBackend
 from vdm.namespaces import D, FOAF, VIVO
@@ -69,6 +69,11 @@ def test_get_subtract_graph():
         == \
         g.serialize(format='nt')
     )
+
+    #Use similar comparison from rdflib.
+    #http://rdflib.readthedocs.org/en/latest/apidocs/rdflib.html#rdflib.compare.similar
+    assert(similar(remove, g) is True)
+
 
 def test_create_resource():
     base = BaseBackend()
