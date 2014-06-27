@@ -4,14 +4,17 @@ Tests for commond Graph manipulations.
 Todo - load RDF into base backend to test add/remove features.
 """
 
-from rdflib import URIRef, Graph, RDF
+from rdflib import URIRef, Graph, RDF, Literal
+from rdflib.compare import graph_diff
 
 from vdm.backend import BaseBackend
 from vdm.namespaces import D, FOAF, VIVO
+from vdm.namespaces import ns_mgr
 
 def test_base():
     base = BaseBackend()
 
+    #prop from abbreviation
     prop = base.get_prop_from_abbrv('vivo:overview')
     assert(prop == VIVO['overview'])
 
@@ -42,3 +45,28 @@ def test_base_create_resource():
     assert(uri == D['p1234'])
     rtype = g.value(subject=uri, predicate=RDF.type)
     assert(rtype == VIVO.InformationResource)
+
+
+def test_get_subtract_graph():
+    g = Graph()
+    g.namespace_manager = ns_mgr
+    #g.add((D['sample'], RDF.type, FOAF.person))
+    g.add((D['sample'], VIVO.overview, Literal("Researcher studying economics.")))
+    base = BaseBackend()
+    base.graph = g
+
+    trip = {}
+    trip['subject'] = D['sample']
+    trip['predicate'] = 'vivo:overview'
+    trip['object'] = "My new overview"
+
+    remove = base.get_subtract_graph(trip)
+    #Subtraction should be equal to the addition.
+    #g == remove was not returning True.
+    #graph diff was returning prefixes
+    assert(
+        remove.serialize(format='nt') \
+        == \
+        g.serialize(format='nt')
+    )
+
