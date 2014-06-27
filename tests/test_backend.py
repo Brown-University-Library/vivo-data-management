@@ -4,7 +4,7 @@ Tests for commond Graph manipulations.
 Todo - load RDF into base backend to test add/remove features.
 """
 
-from rdflib import URIRef, Graph, RDF, Literal
+from rdflib import URIRef, Graph, RDF, RDFS, Literal
 from rdflib.compare import graph_diff
 
 from vdm.backend import BaseBackend
@@ -69,4 +69,18 @@ def test_get_subtract_graph():
         == \
         g.serialize(format='nt')
     )
+
+def test_create_resource():
+    base = BaseBackend()
+    name = u"Smith, Sam"
+    uri, g = base.create_resource('foaf:Person', name)
+
+    label = g.value(subject=uri, predicate=RDFS.label)
+    assert(label.toPython() == name)
+    assert(isinstance(uri, URIRef))
+
+    assigned_uri = D['sample']
+
+    uri, g = base.create_resource('foaf:Person', name, uri=assigned_uri)
+    assert(uri == assigned_uri)
 
