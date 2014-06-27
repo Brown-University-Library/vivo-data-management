@@ -61,15 +61,6 @@ def test_get_subtract_graph():
     trip['object'] = "My new overview"
 
     remove = base.get_subtract_graph(trip)
-    #Subtraction should be equal to the addition.
-    #g == remove was not returning True.
-    #graph diff was returning prefixes
-    assert(
-        remove.serialize(format='nt') \
-        == \
-        g.serialize(format='nt')
-    )
-
     #Use similar comparison from rdflib.
     #http://rdflib.readthedocs.org/en/latest/apidocs/rdflib.html#rdflib.compare.similar
     assert(similar(remove, g) is True)
