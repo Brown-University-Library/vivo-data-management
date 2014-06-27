@@ -128,7 +128,51 @@ class TestBook(BTest):
 
         doi = g.value(subject=uri, predicate=BCITE.doi)
         assert(doi.toPython() == self.doi)
-        #self.eq(1, 2)
+
+class TestConferencePaper(BTest):
+
+    def setUp(self):
+        self.doi = '10.1145/1531542.1531578'
+        raw = load('crossref_conf-paper.json')
+        self.meta = raw
+
+    def test_meta(self):
+        pub = Publication()
+        prepped = pub.prep(self.meta)
+        assert(prepped['title'] == u"Energy-optimal synchronization primitives for single-chip multi-processors")
+        assert(prepped['doi'] == self.doi)
+        assert(prepped['date'] == date(2009, 1, 1))
+        assert(prepped['venue']['label'] == u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09")
+
+    def test_rdf(self):
+        #give book a URI
+        uri = D['n123']
+        pub = Publication()
+        prepped = pub.prep(self.meta)
+        prepped['uri'] = uri
+        g = pub.to_graph(prepped)
+        g.namespace_manager = ns_mgr
+        date_value = g.value(subject=uri, predicate=BCITE.date)
+        assert(date_value.toPython() == date(2009, 1, 1))
+
+        title = g.value(subject=uri, predicate=RDFS.label)
+        assert(title.toPython() == u"Energy-optimal synchronization primitives for single-chip multi-processors")
+
+        doi = g.value(subject=uri, predicate=BCITE.doi)
+        assert(doi.toPython() == self.doi)
+        rq = """
+        select ?label
+        where {
+            ?p bcite:hasVenue ?venue .
+            ?venue rdfs:label ?label .
+        }
+        """
+        results = [r for r in g.query(rq)]
+        if results == []:
+            raise Exception("Query returned no results.")
+        for row in results:
+            self.eq(u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09", row.label.toPython())
+        #assert(self.eq(1, 2))
 
 @pytest.mark.skipif(TRAVIS is True, reason="run locally")
 def test_fetch():

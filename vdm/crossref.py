@@ -113,6 +113,11 @@ class Publication(object):
         ptype = pull(meta, 'type')
         if ptype == u'journal-article':
             d['a'] = 'bcite:Article'
+        elif (ptype == u'Book') or (ptype == u'Monograph'):
+            d['a'] = 'bcite:Book'
+        #add to bcite ontology
+        elif ptype == u'proceedings-article':
+            d['a'] = 'bcite:ConferencePaper'
         else:
             d['a'] = 'bcite:Citation'
         return d
@@ -159,6 +164,7 @@ class Publication(object):
             venue['uri'] = venue_uri
         venue['label'] = pull(meta, 'container-title')
         venue['issn'] = pull(meta, 'ISSN')
+        venue['isbn'] = pull(meta, 'ISBN')
         bib['venue'] = venue
 
         c = {}
