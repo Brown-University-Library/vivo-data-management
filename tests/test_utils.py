@@ -1,5 +1,3 @@
-
-
 import pytest
 
 
@@ -16,6 +14,21 @@ def test_scrub_doi():
 
     d = '<p>10.1234</p>'
     assert(
+        scrub_doi(d) == '10.1234'
+    )
+
+    d = '<a href="http://dx.doi.org/10.1234">10.1234</a>'
+    assert(
+        scrub_doi(d) == '10.1234'
+    )
+
+    d = 'DOI:10.1234'
+    assert (
+        scrub_doi(d) == '10.1234'
+    )
+
+    d = 'doi:10.1234'
+    assert (
         scrub_doi(d) == '10.1234'
     )
 
@@ -47,3 +60,18 @@ def test_get_env():
     os.environ.pop('TMP')
     with pytest.raises(Exception):
         get_env('TMP')
+
+
+def test_remove_html():
+    from vdm.utils import remove_html
+
+    t = "<h1>hello</h1>"
+    assert(
+        remove_html(t),
+        'hello'
+    )
+    t = "<div><h1>hello</h1><span class=\"blah\">world</span></div>"
+    assert(
+        remove_html(t),
+        'hello world'
+    )
