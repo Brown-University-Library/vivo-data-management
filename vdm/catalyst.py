@@ -30,19 +30,26 @@ class DisambiguationEngine(object):
         assemble and post the document to the web service.
         """
         doc = self.build_doc(*args)
-        pubs = self.post(doc)
+        srv_response = self.post(doc)
+        pubs = self.prep_returned_list(srv_response)
         return pubs
 
     def post(self, xml):
         """
-        Post the given doc to the service, parese the returned
+        Post the given doc to the service, parse the returned
         PMIDs into a list, and return list.
         """
         url = SERVICE_URL
         headers = {'Content-Type': 'text/xml'}
         resp = requests.post(url, data=xml, headers=headers)
         logger.debug("Disambiguation service status code.", resp.status_code)
-        root = ET.fromstring(resp.text)
+        return resp.text
+
+    def prep_returned_list(self, raw):
+        """
+        Read the service responses into a Python list.
+        """
+        root = ET.fromstring(raw)
         publications = []
         for child in root:
             publications.append(child.text)
@@ -58,6 +65,7 @@ class DisambiguationEngine(object):
         """
         Build the XML document for the service.
         See structure at above url.
+        Only supports one email address at this time.
         """
         root = ET.Element("FindPMIDs")
         name = ET.SubElement(root, "Name")
