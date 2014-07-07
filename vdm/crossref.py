@@ -166,6 +166,7 @@ class Publication(object):
         venue['issn'] = pull(meta, 'ISSN')
         venue['isbn'] = pull(meta, 'ISBN')
         bib['venue'] = venue
+        bib['published_in'] = pull(meta, 'container-title')
 
         c = {}
         c.update(context.base)

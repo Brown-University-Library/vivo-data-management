@@ -142,7 +142,7 @@ class TestConferencePaper(BTest):
         assert(prepped['title'] == u"Energy-optimal synchronization primitives for single-chip multi-processors")
         assert(prepped['doi'] == self.doi)
         assert(prepped['date'] == date(2009, 1, 1))
-        assert(prepped['venue']['label'] == u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09")
+        assert(prepped['published_in'] == u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09")
 
     def test_rdf(self):
         #give book a URI
@@ -160,18 +160,9 @@ class TestConferencePaper(BTest):
 
         doi = g.value(subject=uri, predicate=BCITE.doi)
         assert(doi.toPython() == self.doi)
-        rq = """
-        select ?label
-        where {
-            ?p bcite:hasVenue ?venue .
-            ?venue rdfs:label ?label .
-        }
-        """
-        results = [r for r in g.query(rq)]
-        if results == []:
-            raise Exception("Query returned no results.")
-        for row in results:
-            self.eq(u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09", row.label.toPython())
+
+        container = g.value(subject=uri, predicate=BCITE.publishedIn)
+        assert(container.toPython() ==u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09")
         #assert(self.eq(1, 2))
 
 @pytest.mark.skipif(TRAVIS is True, reason="run locally")

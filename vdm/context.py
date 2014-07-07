@@ -25,6 +25,7 @@ publication = {
     "volume": "bcite:volume",
     "issn": "bcite:issn",
     "eissn": "bcite:eissn",
+    "published_in": "bcite:publishedIn",
     "date": {
         "@id": "bcite:date",
         "@type": "http://www.w3.org/2001/XMLSchema#date"
