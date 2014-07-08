@@ -8,7 +8,7 @@ from .tutils import load, BTest
 from vdm.crossref import Publication
 from vdm.namespaces import ns_mgr, BCITE, D
 
-from datetime import date
+import datetime
 
 class TestArticle(BTest):
 
@@ -29,6 +29,8 @@ class TestArticle(BTest):
     def test_rdf(self):
         article = Publication()
         meta = article.prep(self.meta)
+        uri = D['n123']
+        meta['uri'] = uri
         g = article.to_graph(meta)
         g.namespace_manager = ns_mgr
         #check venue
@@ -44,6 +46,14 @@ class TestArticle(BTest):
             raise Exception("Query returned no results.")
         for row in results:
             self.eq(u'0022-3476', row.issn.toPython())
+
+        date_literal = g.value(subject=uri, predicate=BCITE.date)
+        date_value = date_literal.toPython()
+        assert(date_value == datetime.date(2013, 12, 1))
+        #Make sure our dates are datetime.date and not datetime.datetime.
+        assert(type(date_value) == datetime.date)
+        assert(date_value.year == 2013)
+        assert(date_value.month == 12)
 
 
     def test_contrib(self):
@@ -86,7 +96,7 @@ class TestBook(BTest):
         prepped = pub.prep(self.meta)
         assert(prepped['title'] == u"Pagan Virtue")
         assert(prepped['doi'] == self.doi)
-        assert(prepped['date'] == date(1900, 1, 1))
+        assert(prepped['date'] == datetime.date(1900, 1, 1))
 
     def test_rdf(self):
         #give book a URI
@@ -96,8 +106,13 @@ class TestBook(BTest):
         prepped['uri'] = uri
         g = pub.to_graph(prepped)
         g.namespace_manager = ns_mgr
-        date_value = g.value(subject=uri, predicate=BCITE.date)
-        assert(date_value.toPython() == date(1900, 1, 1))
+        date_literal = g.value(subject=uri, predicate=BCITE.date)
+        date_value = date_literal.toPython()
+        assert(date_value == datetime.date(1900, 1, 1))
+        #Make sure our dates are datetime.date and not datetime.datetime.
+        assert(type(date_value) == datetime.date)
+        assert(date_value.year == 1900)
+        assert(date_value.month == 1)
 
         title = g.value(subject=uri, predicate=RDFS.label)
         assert(title.toPython() == u"Pagan Virtue")

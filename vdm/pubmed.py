@@ -60,7 +60,7 @@ class Publication(object):
         if spdate is not None:
             dt = parse(spdate)
             #Only date not datetime needed.
-            return dt.date
+            return dt.date()
         return
 
     def prep(self, meta, pub_uri=None, venue_uri=None, contributors=[]):
