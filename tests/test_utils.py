@@ -75,3 +75,30 @@ def test_remove_html():
         remove_html(t),
         'hello world'
     )
+
+def test_user_agent():
+    """
+    Set user agent.
+    """
+    from vdm.utils import setup_user_agent
+    import os
+    import requests
+    agent = "Sample agent"
+    os.environ['USER_AGENT'] = agent
+    h = setup_user_agent()
+    resp = requests.get('http://httpbin.org/get', headers=h)
+    assert(resp.request.headers.get('User-Agent') == agent)
+
+def test_user_agent_warning():
+    """
+    No user agent set should trigger a warning.
+    """
+    from vdm.utils import setup_user_agent
+    import os
+    import warnings
+    with warnings.catch_warnings(record=True) as w:
+        os.environ.pop('USER_AGENT')
+        #This should trigger a warning.
+        headers = setup_user_agent()
+        assert "agent" in str(w[-1].message)
+        assert issubclass(w[-1].category, UserWarning)

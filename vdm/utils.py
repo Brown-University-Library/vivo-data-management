@@ -1,4 +1,5 @@
 import os
+import warnings
 
 import bleach
 
@@ -34,3 +35,16 @@ def scrub_doi(val):
 def pull(meta, k):
     f = lambda x: None if unicode(x) is u'' else x
     return f(meta.get(k))
+
+
+def setup_user_agent():
+    """
+    Utility to set user agent for requests library.
+    """
+    try:
+        agent = get_env('USER_AGENT')
+        return {'User-Agent': agent}
+    except Exception:
+        warnings.warn("No user agent set.  Set ENV USER_AGENT.")
+        #No agent set
+        return

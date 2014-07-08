@@ -12,11 +12,13 @@ import requests
 #from context import base, publication, publication_venue
 import context
 
-from utils import pull
+from utils import pull, setup_user_agent
+
+request_headers = setup_user_agent()
 
 def get_pubmed(pmid):
     doc_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=%s&retmode=json' % pmid
-    resp = requests.get(doc_url)
+    resp = requests.get(doc_url, headers=request_headers)
     raw = resp.json()
     if raw is not None:
         meta = raw['result'][pmid]
@@ -30,7 +32,7 @@ class Publication(object):
 
     def fetch(self, pmid):
         doc_url = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=%s&retmode=json' % pmid
-        resp = requests.get(doc_url)
+        resp = requests.get(doc_url, headers=request_headers)
         raw = resp.json()
         if raw.get('error') is None:
             meta = raw['result'][pmid]
