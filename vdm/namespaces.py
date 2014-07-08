@@ -4,7 +4,7 @@ from utils import get_env
 #Namespaces
 from rdflib import Graph, Namespace
 from rdflib.namespace import NamespaceManager, ClosedNamespace
-from rdflib import RDFS
+from rdflib import RDFS, OWL
 
 #setup namespaces
 #code inspired by / borrowed from https://github.com/libris/librislod
