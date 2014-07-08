@@ -53,10 +53,14 @@ class Publication(object):
         return d
 
     def date(self, meta):
-        #date
+        """
+        Handle publication dates.
+        """
         spdate = meta.get('sortpubdate')
         if spdate is not None:
-            return parse(spdate)
+            dt = parse(spdate)
+            #Only date not datetime needed.
+            return dt.date
         return
 
     def prep(self, meta, pub_uri=None, venue_uri=None, contributors=[]):

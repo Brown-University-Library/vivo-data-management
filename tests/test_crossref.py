@@ -45,6 +45,7 @@ class TestArticle(BTest):
         for row in results:
             self.eq(u'0022-3476', row.issn.toPython())
 
+
     def test_contrib(self):
         b = {}
         uri = D['n123']

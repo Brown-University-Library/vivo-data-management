@@ -6,6 +6,7 @@ from rdflib import URIRef
 
 from .tutils import load, BTest
 from dateutil import parser
+import datetime
 
 from vdm.pubmed import Publication
 from vdm.namespaces import ns_mgr, BCITE, D
@@ -55,6 +56,15 @@ class TestArticle(BTest):
         """
         for row in g.query(rq):
             self.eq(u'0022-3476', row.issn.toPython())
+
+        date = g.value(subject=pub_uri, predicate=BCITE.date)
+        #dt = date.toPython()
+        #Make sure our dates are datetime.date and not datetime.datetime.
+        #assert(
+        #    type(dt) == datetime.date
+        #)
+        assert(date.toPython().year == 2013)
+        assert(dt.month == 12)
 
     def test_rdf_venue_uri(self):
         venue_uri = D['v123']
