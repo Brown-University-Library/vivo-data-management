@@ -11,6 +11,9 @@ from rdflib_jsonld.parser import to_rdf
 
 import context
 
+from utils import pull, setup_user_agent
+user_agent = setup_user_agent()
+
 def pull(meta, k):
     f = lambda x: None if x is u'' else x
     return f(meta.get(k))
@@ -18,6 +21,7 @@ def pull(meta, k):
 def get_crossref_rdf(doi):
     #Use an HTTP cache.
     h = {'Accept': 'application/rdf+xml'}
+    h.update(user_agent)
     handle = requests.get(doi, headers=h)
     try:
         graph = Graph().parse(data=handle.text)
@@ -34,6 +38,7 @@ def get_citeproc(doi):
     else:
         doi = pre + doi
     h = {'Accept': 'application/citeproc+json'}
+    h.update(user_agent)
     handle = requests.get(doi, headers=h)
     try:
         return handle.json()
@@ -52,7 +57,7 @@ def metadata_search(search_string):
     Search the metadata API.
     """
     base = "http://search.crossref.org/dois?q={0}".format(search_string)
-    resp = requests.get(base)
+    resp = requests.get(base, headers=user_agent)
     data = resp.json()
     if len(data) == 0:
         raise CrossRefSearchException("No CR metadata search results")

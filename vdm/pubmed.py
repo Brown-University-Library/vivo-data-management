@@ -128,4 +128,3 @@ class Publication(object):
     def to_graph(self, prepped):
         g = to_rdf(prepped, Graph())
         return g
-

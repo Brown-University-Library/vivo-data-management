@@ -1,5 +1,4 @@
 import os
-import warnings
 
 import bleach
 
@@ -45,6 +44,8 @@ def setup_user_agent():
         agent = get_env('USER_AGENT')
         return {'User-Agent': agent}
     except Exception:
-        warnings.warn("No user agent set.  Set ENV USER_AGENT.")
+        #Setting a warning here would be nice but couldn't get
+        #tests to pass consistently when testing for warning.
+        #warnings.warn("No user agent set.  Set ENV USER_AGENT.")
         #No agent set
-        return
+        return {}

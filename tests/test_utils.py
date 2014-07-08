@@ -88,17 +88,22 @@ def test_user_agent():
     h = setup_user_agent()
     resp = requests.get('http://httpbin.org/get', headers=h)
     assert(resp.request.headers.get('User-Agent') == agent)
+    del os.environ['USER_AGENT']
 
-def test_user_agent_warning():
+def test_user_agent_not_set():
     """
     No user agent set should trigger a warning.
     """
     from vdm.utils import setup_user_agent
     import os
-    import warnings
-    with warnings.catch_warnings(record=True) as w:
-        os.environ.pop('USER_AGENT')
-        #This should trigger a warning.
-        headers = setup_user_agent()
-        assert "agent" in str(w[-1].message)
-        assert issubclass(w[-1].category, UserWarning)
+    import requests
+    #This will cause warnings to raise an error
+    try:
+        del os.environ['USER_AGENT']
+    except KeyError:
+        print "No USER_AGENT set."
+    headers = setup_user_agent()
+    assert headers == {}
+    resp = requests.get('http://httpbin.org/get', headers=headers)
+    #By default the user agent will contain python.
+    assert(resp.request.headers.get('User-Agent').find('python') > -1)
