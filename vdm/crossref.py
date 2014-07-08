@@ -11,18 +11,21 @@ from rdflib_jsonld.parser import to_rdf
 
 import context
 
-from utils import pull, setup_user_agent
-user_agent = setup_user_agent()
+from utils import pull, get_user_agent
 
-def pull(meta, k):
-    f = lambda x: None if x is u'' else x
-    return f(meta.get(k))
+doi_prefix = 'http://dx.doi.org/'
+
 
 def get_crossref_rdf(doi):
-    #Use an HTTP cache.
+    if doi.startswith(doi_prefix):
+        pass
+    else:
+        doi = doi_prefix + doi
     h = {'Accept': 'application/rdf+xml'}
-    h.update(user_agent)
+    ua = get_user_agent()
+    h.update(ua)
     handle = requests.get(doi, headers=h)
+    print handle.request.headers
     try:
         graph = Graph().parse(data=handle.text)
     except Exception, e:
@@ -31,20 +34,22 @@ def get_crossref_rdf(doi):
     return graph
 
 def get_citeproc(doi):
-    #Use an HTTP cache.
-    pre = 'http://dx.doi.org/'
-    if doi.startswith(pre):
+    """
+    Get citeproc from CrossRef.
+    """
+    if doi.startswith(doi_prefix):
         pass
     else:
-        doi = pre + doi
+        doi = doi_prefix + doi
     h = {'Accept': 'application/citeproc+json'}
-    h.update(user_agent)
+    ua = get_user_agent()
+    h.update(ua)
     handle = requests.get(doi, headers=h)
     try:
         return handle.json()
     except Exception, e:
-        logging.error("Bad DOI {0}".format(doi))
-        logging.error(e)
+        logger.error("Bad DOI {0}".format(doi))
+        logger.error(e)
         return
 
 

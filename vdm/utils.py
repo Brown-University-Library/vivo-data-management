@@ -1,4 +1,5 @@
 import os
+import warnings
 
 import bleach
 
@@ -36,16 +37,14 @@ def pull(meta, k):
     return f(meta.get(k))
 
 
-def setup_user_agent():
+def get_user_agent():
     """
-    Utility to set user agent for requests library.
+    Utility to get user agent for requests library.
     """
     try:
-        agent = get_env('USER_AGENT')
+        agent = get_env('VDM_USER_AGENT')
         return {'User-Agent': agent}
     except Exception:
-        #Setting a warning here would be nice but couldn't get
-        #tests to pass consistently when testing for warning.
-        #warnings.warn("No user agent set.  Set ENV USER_AGENT.")
+        warnings.warn("Warning.  No user agent set. Set ENV VDM_USER_AGENT.")
         #No agent set
         return {}

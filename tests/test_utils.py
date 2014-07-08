@@ -80,30 +80,40 @@ def test_user_agent():
     """
     Set user agent.
     """
-    from vdm.utils import setup_user_agent
+    from vdm.utils import get_user_agent
     import os
     import requests
     agent = "Sample agent"
-    os.environ['USER_AGENT'] = agent
-    h = setup_user_agent()
+    os.environ['VDM_USER_AGENT'] = agent
+    h = get_user_agent()
     resp = requests.get('http://httpbin.org/get', headers=h)
     assert(resp.request.headers.get('User-Agent') == agent)
-    del os.environ['USER_AGENT']
+    del os.environ['VDM_USER_AGENT']
 
 def test_user_agent_not_set():
     """
     No user agent set should trigger a warning.
     """
-    from vdm.utils import setup_user_agent
+    from vdm.utils import get_user_agent
     import os
     import requests
+    import warnings
     #This will cause warnings to raise an error
     try:
-        del os.environ['USER_AGENT']
+        del os.environ['VDM_USER_AGENT']
     except KeyError:
-        print "No USER_AGENT set."
-    headers = setup_user_agent()
-    assert headers == {}
+        pass
+    with warnings.catch_warnings(record=True) as w:
+        # Cause all warnings to always be triggered.
+        warnings.simplefilter("always")
+        # Trigger a warning.
+        headers = get_user_agent()
+        # Verify some things
+        assert len(w) == 1
+        assert issubclass(w[-1].category, UserWarning)
+        assert "agent" in str(w[-1].message)
+
     resp = requests.get('http://httpbin.org/get', headers=headers)
     #By default the user agent will contain python.
     assert(resp.request.headers.get('User-Agent').find('python') > -1)
+

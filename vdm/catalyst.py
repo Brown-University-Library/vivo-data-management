@@ -9,8 +9,7 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 
-from utils import setup_user_agent
-user_agent = setup_user_agent()
+from utils import get_user_agent
 
 SERVICE_URL = 'http://profiles.catalyst.harvard.edu/services/GetPMIDs/default.asp'
 
@@ -44,7 +43,8 @@ class DisambiguationEngine(object):
         """
         url = SERVICE_URL
         headers = {'Content-Type': 'text/xml'}
-        headers.update(user_agent)
+        ua = get_user_agent()
+        headers.update(ua)
         resp = requests.post(url, data=xml, headers=headers)
         logger.debug("Disambiguation service status code.", resp.status_code)
         return resp.text

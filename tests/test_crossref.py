@@ -1,14 +1,23 @@
 from pprint import pprint
 import json
 
+import pytest
 from rdflib import URIRef, RDFS
 
 from .tutils import load, BTest
 
+from vdm.utils import get_env
+
 from vdm.crossref import Publication
-from vdm.namespaces import ns_mgr, BCITE, D
+from vdm.namespaces import ns_mgr, BCITE, D, DCTERMS
 
 import datetime
+
+try:
+    get_env('TRAVIS')
+    TRAVIS = True
+except Exception:
+    TRAVIS = False
 
 class TestArticle(BTest):
 
@@ -121,4 +130,25 @@ class TestBook(BTest):
         assert(doi.toPython() == self.doi)
         #self.eq(1, 2)
 
+@pytest.mark.skipif(TRAVIS is True, reason="run locally")
+def test_fetch():
+    import os
+    from vdm.crossref import get_citeproc, get_crossref_rdf
+    os.environ['VDM_USER_AGENT'] = 'Test client https://github.com/Brown-University-Library/vivo-data-management'
+    doi = '10.1016/j.jpeds.2013.06.032'
+    cp = get_citeproc(doi)
+    assert(cp.get('container-title') == u'The Journal of Pediatrics')
+    assert(cp.get('issue') == u'6')
 
+    #Test RDF fetch
+    cr_rdf = get_crossref_rdf(doi)
+    uri = 'http://dx.doi.org/' + doi
+    title = cr_rdf.value(subject=URIRef(uri), predicate=DCTERMS.title)
+    assert(title.toPython().startswith(u'Preterm Infant Linear Growth and Adiposity Gain'))
+
+    del os.environ['VDM_USER_AGENT']
+    #Test RDF fetch again
+    cr_rdf = get_crossref_rdf(doi)
+    uri = 'http://dx.doi.org/' + doi
+    title = cr_rdf.value(subject=URIRef(uri), predicate=DCTERMS.title)
+    assert(title.toPython().startswith(u'Preterm Infant Linear Growth and Adiposity Gain'))
