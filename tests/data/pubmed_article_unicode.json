@@ -1,0 +1,130 @@
+{
+    "header": {
+        "type": "esummary",
+        "version": "0.3"
+    },
+    "result": {
+        "uids": [
+            "24948623"
+        ],
+        "24948623": {
+            "uid": "24948623",
+            "pubdate": "2014 Jun 19",
+            "epubdate": "",
+            "source": "Blood",
+            "authors": [
+                {
+                    "name": "Castillo JJ",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Olszewski AJ",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Cronin AM",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Hunter ZR",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Treon SP",
+                    "authtype": "Author",
+                    "clusterid": ""
+                }
+            ],
+            "lastauthor": "Treon SP",
+            "title": "Survival trends in Waldenström macroglobulinemia: an analysis of the Surveillance, Epidemiology and End Results database.",
+            "sorttitle": "survival trends in waldenstr m macroglobulinemia an analysis of the surveillance epidemiology and end results database ",
+            "volume": "123",
+            "issue": "25",
+            "pages": "3999-4000",
+            "lang": [
+                "eng"
+            ],
+            "nlmuniqueid": "7603509",
+            "issn": "0006-4971",
+            "essn": "1528-0020",
+            "pubtype": [
+                "Letter"
+            ],
+            "recordstatus": "PubMed - in process",
+            "pubstatus": "4",
+            "articleids": [
+                {
+                    "idtype": "pii",
+                    "idtypen": 4,
+                    "value": "123/25/3999"
+                },
+                {
+                    "idtype": "doi",
+                    "idtypen": 3,
+                    "value": "10.1182/blood-2014-05-574871"
+                },
+                {
+                    "idtype": "pubmed",
+                    "idtypen": 1,
+                    "value": "24948623"
+                },
+                {
+                    "idtype": "eid",
+                    "idtypen": 8,
+                    "value": "24948623"
+                },
+                {
+                    "idtype": "rid",
+                    "idtypen": 8,
+                    "value": "24948623"
+                }
+            ],
+            "history": [
+                {
+                    "pubstatus": "entrez",
+                    "date": "2014/06/21 06:00"
+                },
+                {
+                    "pubstatus": "pubmed",
+                    "date": "2014/06/21 06:00"
+                },
+                {
+                    "pubstatus": "medline",
+                    "date": "2014/06/21 06:00"
+                }
+            ],
+            "references": [
+            ],
+            "attributes": [
+            ],
+            "pmcrefcount": 0,
+            "fulljournalname": "Blood",
+            "elocationid": "doi: 10.1182/blood-2014-05-574871",
+            "viewcount": 99,
+            "doctype": "citation",
+            "srccontriblist": [
+            ],
+            "booktitle": "",
+            "medium": "",
+            "edition": "",
+            "publisherlocation": "",
+            "publishername": "",
+            "srcdate": "",
+            "reportnumber": "",
+            "availablefromurl": "",
+            "locationlabel": "",
+            "doccontriblist": [
+            ],
+            "docdate": "",
+            "bookname": "",
+            "chapter": "",
+            "sortpubdate": "2014/06/19 00:00",
+            "sortfirstauthor": "Castillo JJ"
+        }
+    }
+}
+

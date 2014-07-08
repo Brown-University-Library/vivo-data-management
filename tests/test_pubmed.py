@@ -1,8 +1,8 @@
-
+# -*- coding: utf-8 -*-
 from pprint import pprint
 import os
 
-from rdflib import URIRef
+from rdflib import URIRef, RDFS
 
 from .tutils import load, BTest
 from dateutil import parser
@@ -108,3 +108,48 @@ class TestArticle(BTest):
             for ob in g.objects(subject=D['n123'], predicate=BCITE.hasContributor):
                 ca2.index(ob) > -1
                 assert(type(ob) == URIRef)
+
+class TestArticleUnicode(BTest):
+    """
+    Test an article with umlaut to make sure unicode is
+    occuring properly.
+    """
+    def setUp(self):
+        self.pmid = '24948623'
+        raw_data = load('pubmed_article_unicode.json')
+        self.meta = raw_data['result'][self.pmid]
+
+    def test_meta(self):
+        article = Publication()
+        prepped = article.prep(self.meta)
+        self.eq(
+            u'Survival trends in Waldenström macroglobulinemia: an analysis of the Surveillance, Epidemiology and End Results database.',
+            prepped['title']
+        )
+        self.eq(
+            u'Blood',
+            prepped['venue']['label']
+        )
+        self.eq(u'123', prepped['volume'])
+
+        dtv = prepped['date']
+        self.eq(2014, dtv.year)
+        self.eq(6, dtv.month)
+        assert(type(dtv) == datetime.date)
+
+    def test_rdf(self):
+        pub_uri = D['n123']
+        article = Publication()
+        meta = article.prep(self.meta, pub_uri=pub_uri)
+        g = article.to_graph(meta)
+        g.namespace_manager = ns_mgr
+        #ids
+        pmid = g.value(subject=pub_uri, predicate=BCITE.pmid)
+        self.eq(self.pmid, pmid.toPython())
+        doi = g.value(subject=pub_uri, predicate=BCITE.doi)
+        self.eq(u'10.1182/blood-2014-05-574871', doi.toPython())
+
+        title = g.value(subject=pub_uri, predicate=RDFS.label)
+        assert(
+            title.toPython().startswith(u'Survival trends in Waldenström macroglobulinemia:')
+        )
