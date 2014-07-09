@@ -1,5 +1,4 @@
 import os
-import warnings
 
 import bleach
 
@@ -45,6 +44,5 @@ def get_user_agent():
         agent = get_env('VDM_USER_AGENT')
         return {'User-Agent': agent}
     except Exception:
-        warnings.warn("Warning.  No user agent set. Set ENV VDM_USER_AGENT.")
         #No agent set
         return {}
