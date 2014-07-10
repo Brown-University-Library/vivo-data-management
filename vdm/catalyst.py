@@ -100,7 +100,7 @@ class DisambiguationEngine(object):
         #Pass this in from profile depending on fac
         threshold = ET.SubElement(root, "MatchThreshold")
         threshold.text = self.threshold_score
-        if known_pubs is None:
+        if (known_pubs is None) or (known_pubs == []):
             raise Exception("Known PMIDs are required.")
         pmid_add = ET.SubElement(root, "PMIDAddList")
         for pub in known_pubs:

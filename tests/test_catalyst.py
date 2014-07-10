@@ -31,6 +31,40 @@ def test_profile():
     assert('<email>jcarberry@brown.edu</email>' in doc)
     assert('<Affiliation>%Sample University%</Affiliation>' in doc)
 
+def test_no_known_pubs():
+    p = [
+        'Josiah',
+        'Carberry',
+        None,
+        'jcarberry@brown.edu',
+        [],
+        []
+    ]
+
+    disambig = DisambiguationEngine()
+    disambig.affiliation_strings = ['Sample University']
+
+    #This should raise an exception because we didn't send
+    #known publications.
+    with pytest.raises(Exception):
+        doc = disambig.build_doc(*p)
+
+    p = [
+        'Josiah',
+        'Carberry',
+        None,
+        'jcarberry@brown.edu',
+        None,
+        []
+    ]
+
+    disambig = DisambiguationEngine()
+    disambig.affiliation_strings = ['Sample University']
+    #This should raise an exception because we didn't send
+    #known publications.
+    with pytest.raises(Exception):
+        doc = disambig.build_doc(*p)
+
 @pytest.mark.skipif(TRAVIS is True, reason="run locally")
 def test_engine():
     p = [
