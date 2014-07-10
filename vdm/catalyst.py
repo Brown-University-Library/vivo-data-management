@@ -9,7 +9,7 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 
-from utils import get_user_agent
+from utils import get_user_agent, scrub_pmid
 
 SERVICE_URL = 'http://profiles.catalyst.harvard.edu/services/GetPMIDs/default.asp'
 
@@ -59,6 +59,17 @@ class DisambiguationEngine(object):
             publications.append(child.text)
         return publications
 
+    def clean_pubs(self, pubs):
+        """
+        Run minimal validation on the PMIDs.
+        """
+        out = []
+        for pub in pubs:
+            val = scrub_pmid(pub)
+            if val is not None:
+                out.append(val)
+        return out
+
     def build_doc(self,
             first_name,
             last_name,
@@ -71,6 +82,10 @@ class DisambiguationEngine(object):
         See structure at above url.
         Only supports one email address at this time.
         """
+        #Validate/clean the incoming publications
+        known_pubs = self.clean_pubs(known_pubs)
+        exclude_pubs = self.clean_pubs(exclude_pubs)
+
         root = ET.Element("FindPMIDs")
         name = ET.SubElement(root, "Name")
         if (first_name is None) or (last_name is None):

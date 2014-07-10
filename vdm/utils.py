@@ -1,3 +1,5 @@
+
+import re
 import os
 
 import bleach
@@ -46,3 +48,20 @@ def get_user_agent():
     except Exception:
         #No agent set
         return {}
+
+def scrub_pmid(value):
+    """
+    Minimal cleanup on incoming PMIDs for validation.
+    http://www.nlm.nih.gov/bsd/mms/medlineelements.html#pmid
+    """
+    if value.startswith("PMC"):
+        return None
+    match = re.findall(r'(\d{8})', value)
+    try:
+        v = match[0]
+    except IndexError:
+        return None
+    #Don't allow 0 to be returned.
+    if v == 0:
+        return None
+    return v

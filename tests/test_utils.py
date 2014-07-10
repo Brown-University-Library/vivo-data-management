@@ -108,3 +108,10 @@ def test_user_agent_not_set():
     #By default the user agent will contain python.
     assert(resp.request.headers.get('User-Agent').find('python') > -1)
 
+
+def test_scrub_pmid():
+    from vdm.utils import scrub_pmid
+    assert scrub_pmid(u'PMC2727248') is None
+    p = u'18633329'
+    assert scrub_pmid(p) == p
+    assert(scrub_pmid(u'000') is None)

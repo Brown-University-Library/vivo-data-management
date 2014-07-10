@@ -16,8 +16,8 @@ def test_profile():
         'Carberry',
         None,
         'jcarberry@brown.edu',
-        ['null'],
-        ['null']
+        ['12345678'],
+        ['23456789']
     ]
 
     disambig = DisambiguationEngine()
@@ -55,6 +55,24 @@ def test_no_known_pubs():
         None,
         'jcarberry@brown.edu',
         None,
+        []
+    ]
+
+    disambig = DisambiguationEngine()
+    disambig.affiliation_strings = ['Sample University']
+    #This should raise an exception because we didn't send
+    #known publications.
+    with pytest.raises(Exception):
+        doc = disambig.build_doc(*p)
+
+
+    #Invalid pubmed id.
+    p = [
+        'Josiah',
+        'Carberry',
+        None,
+        'jcarberry@brown.edu',
+        ['PMC1234'],
         []
     ]
 
