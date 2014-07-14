@@ -62,7 +62,8 @@ def metadata_search(search_string):
     Search the metadata API.
     """
     base = "http://search.crossref.org/dois?q={0}".format(search_string)
-    resp = requests.get(base, headers=user_agent)
+    ua = get_user_agent()
+    resp = requests.get(base, headers=ua)
     data = resp.json()
     if len(data) == 0:
         raise CrossRefSearchException("No CR metadata search results")

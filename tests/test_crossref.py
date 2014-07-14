@@ -152,3 +152,12 @@ def test_fetch():
     uri = 'http://dx.doi.org/' + doi
     title = cr_rdf.value(subject=URIRef(uri), predicate=DCTERMS.title)
     assert(title.toPython().startswith(u'Preterm Infant Linear Growth and Adiposity Gain'))
+
+@pytest.mark.skipif(TRAVIS is True, reason="run locally")
+def test_metadata_search():
+    from vdm.crossref import metadata_search
+    meta = metadata_search('10.1001/jama.2011.563')
+    citation = meta[0]['fullCitation']
+    assert(citation.find(u'Hospitalist Efforts and Improving Discharge') > -1)
+    doi = meta[0]['doi']
+    assert(doi == u'http://dx.doi.org/10.1001/jama.2011.563')
