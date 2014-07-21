@@ -141,7 +141,7 @@ class TestConferencePaper(BTest):
         prepped = pub.prep(self.meta)
         assert(prepped['title'] == u"Energy-optimal synchronization primitives for single-chip multi-processors")
         assert(prepped['doi'] == self.doi)
-        assert(prepped['date'] == date(2009, 1, 1))
+        assert(prepped['date'] == datetime.date(2009, 1, 1))
         assert(prepped['published_in'] == u"Proceedings of the 19th ACM Great Lakes symposium on VLSI - GLSVLSI '09")
 
     def test_rdf(self):
@@ -153,7 +153,7 @@ class TestConferencePaper(BTest):
         g = pub.to_graph(prepped)
         g.namespace_manager = ns_mgr
         date_value = g.value(subject=uri, predicate=BCITE.date)
-        assert(date_value.toPython() == date(2009, 1, 1))
+        assert(date_value.toPython() == datetime.date(2009, 1, 1))
 
         title = g.value(subject=uri, predicate=RDFS.label)
         assert(title.toPython() == u"Energy-optimal synchronization primitives for single-chip multi-processors")
