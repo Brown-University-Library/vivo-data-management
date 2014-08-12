@@ -155,7 +155,7 @@ class TestArticleUnicode(BTest):
         )
 
 
-def test_idconvert():
+def test_id_convert():
     """
     Test the idconvert tool.
 
@@ -163,22 +163,22 @@ def test_idconvert():
     recognized identifier to a non-matching unrecognized
     identifier.
     """
-    from vdm.pubmed import idconv
+    from vdm.pubmed import id_convert
 
     #Should return match
-    meta = idconv('10.1371/journal.pmed.0040305')
+    meta = id_convert('10.1371/journal.pmed.0040305')
     assert(
         meta['pmid'] == '18001145'
     )
 
     #DOI identified but should not match
-    meta = idconv('10.2514/1.J051183baddoi')
+    meta = id_convert('10.2514/1.J051183baddoi')
     assert (
         meta is None
     )
 
     #Uknown identifier type - should not match
-    meta = idconv('badIDSentToServiceForTesting')
+    meta = id_convert('badIDSentToServiceForTesting')
     assert (
         meta is None
     )

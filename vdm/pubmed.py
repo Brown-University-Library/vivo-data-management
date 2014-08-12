@@ -131,7 +131,7 @@ class Publication(object):
         return g
 
 
-def idconv(values, idtype=None):
+def id_convert(values, idtype=None):
     """
     Get data from the id converter API.
     https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/
