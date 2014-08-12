@@ -153,3 +153,32 @@ class TestArticleUnicode(BTest):
         assert(
             title.toPython().startswith(u'Survival trends in Waldenström macroglobulinemia:')
         )
+
+
+def test_idconvert():
+    """
+    Test the idconvert tool.
+
+    API response format varies from a non-matching
+    recognized identifier to a non-matching unrecognized
+    identifier.
+    """
+    from vdm.pubmed import idconv
+
+    #Should return match
+    meta = idconv('10.1371/journal.pmed.0040305')
+    assert(
+        meta['pmid'] == '18001145'
+    )
+
+    #DOI identified but should not match
+    meta = idconv('10.2514/1.J051183baddoi')
+    assert (
+        meta is None
+    )
+
+    #Uknown identifier type - should not match
+    meta = idconv('badIDSentToServiceForTesting')
+    assert (
+        meta is None
+    )

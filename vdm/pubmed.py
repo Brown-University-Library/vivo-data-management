@@ -129,3 +129,32 @@ class Publication(object):
     def to_graph(self, prepped):
         g = to_rdf(prepped, Graph())
         return g
+
+
+def idconv(values, idtype=None):
+    """
+    Get data from the id converter API.
+    https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/
+    """
+    base = 'http://www.pubmedcentral.nih.gov/utils/idconv/v1.0/'
+    ua = get_user_agent()
+    params = {
+        'ids': values,
+        'format': 'json',
+    }
+    if idtype is not None:
+        params['idtype'] = idtype
+
+    #Make request with user agent.
+    resp = requests.get(base, params=params, headers=ua)
+    raw = resp.json()
+    records = raw.get('records')
+    if records is None:
+        return None
+    status = records[0].get('status')
+    if status == u"error":
+        return None
+
+    return raw['records'][0]
+
+
