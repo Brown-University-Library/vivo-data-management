@@ -1,0 +1,190 @@
+{
+    "header": {
+        "type": "esummary",
+        "version": "0.3"
+    },
+    "result": {
+        "uids": [
+            "22553887"
+        ],
+        "22553887": {
+            "uid": "22553887",
+            "pubdate": "2012 Mar",
+            "epubdate": "",
+            "source": "",
+            "authors": [
+                {
+                    "name": "Dahabreh IJ",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Chung M",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Kitsios GD",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Terasawa T",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Raman G",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Tatsioni A",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Tobar A",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Lau J",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Trikalinos TA",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Schmid CH",
+                    "authtype": "Author",
+                    "clusterid": ""
+                }
+            ],
+            "lastauthor": "Schmid CH",
+            "title": "",
+            "sorttitle": "comprehensive overview of methods and reporting of meta analyses of test accuracy ",
+            "volume": "",
+            "issue": "",
+            "pages": "",
+            "lang": [
+                "eng"
+            ],
+            "nlmuniqueid": "",
+            "issn": "",
+            "essn": "",
+            "pubtype": [
+            ],
+            "recordstatus": "PubMed",
+            "pubstatus": "ppublish",
+            "articleids": [
+                {
+                    "idtype": "pubmed",
+                    "idtypen": 1,
+                    "value": "22553887"
+                },
+                {
+                    "idtype": "bookaccession",
+                    "idtypen": 8,
+                    "value": "NBK92422"
+                }
+            ],
+            "history": [
+                {
+                    "pubstatus": "pubmed",
+                    "date": "2012/05/04 06:00"
+                },
+                {
+                    "pubstatus": "medline",
+                    "date": "2012/05/04 06:00"
+                },
+                {
+                    "pubstatus": "entrez",
+                    "date": "2012/05/04 06:00"
+                }
+            ],
+            "references": [
+            ],
+            "attributes": [
+                "Has Abstract"
+            ],
+            "pmcrefcount": 2,
+            "fulljournalname": "",
+            "elocationid": "",
+            "viewcount": 60,
+            "doctype": "book",
+            "srccontriblist": [
+                {
+                    "name": "Dahabreh IJ",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Chung M",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Kitsios GD",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Terasawa T",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Raman G",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Tatsioni A",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Tobar A",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Lau J",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Trikalinos TA",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Schmid CH",
+                    "authtype": "Author",
+                    "clusterid": ""
+                }
+            ],
+            "booktitle": "Comprehensive Overview of Methods and Reporting of Meta-Analyses of Test Accuracy",
+            "medium": "Internet",
+            "edition": "",
+            "publisherlocation": "Rockville (MD)",
+            "publishername": "Agency for Healthcare Research and Quality (US)",
+            "srcdate": "2012 Mar",
+            "reportnumber": "Report No.: 12-EHC044-EF",
+            "availablefromurl": "http://www.ncbi.nlm.nih.gov/books/NBK92422/",
+            "locationlabel": "",
+            "doccontriblist": [
+            ],
+            "docdate": "",
+            "bookname": "methresover",
+            "chapter": "",
+            "sortpubdate": "2012/03/01 00:00",
+            "sortfirstauthor": "Dahabreh IJ"
+        }
+    }
+}
+

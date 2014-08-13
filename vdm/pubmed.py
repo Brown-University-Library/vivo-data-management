@@ -53,6 +53,9 @@ class Publication(object):
                 return d
             else:
                 d['a'] = "bcite:Citation"
+        #Check doctype for book.
+        if meta.get('doctype') == u"book":
+            d['a'] = 'bcite:Book'
         return d
 
     def date(self, meta):
@@ -79,6 +82,9 @@ class Publication(object):
         #One to one mappings
         for k in ['title', 'volume', 'issue', 'pages']:
             bib[k] = pull(meta, k)
+        #For books, the title is in booktitle.
+        if bib.get('title') is None:
+            bib['title'] = pull(meta, 'booktitle')
         #Identifiers
         for aid in meta.get('articleids', []):
             value = pull(aid, 'value')
@@ -104,14 +110,21 @@ class Publication(object):
 
         bib['date'] = self.date(meta)
 
+        #Get venues if there is one.
         venue = {}
         if venue_uri is not None:
             venue['uri'] = venue_uri
-        venue['label'] = meta.get('fulljournalname')
+        venue['label'] = pull(meta, 'fulljournalname')
         venue['issn'] = pull(meta, 'issn')
         venue['eissn'] = pull(meta, 'essn')
-        bib['venue'] = venue
+        if (venue['label'] is not None):
+            bib['venue'] = venue
 
+        #Check for urls
+        url = pull(meta, 'availablefromurl')
+        if url is not None:
+            bib['url'] = url
+        
         c = {}
         c.update(context.base)
         c.update(context.publication)
