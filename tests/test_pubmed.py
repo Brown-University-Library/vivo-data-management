@@ -235,3 +235,12 @@ def test_id_convert():
     assert (
         meta is None
     )
+
+
+def test_doi_search():
+    from vdm.pubmed import doi_search
+    doi = u"10.1097/dbp.0000000000000060"
+    rsp = doi_search(doi)
+    assert(
+        rsp == "24906035"
+    )

@@ -171,3 +171,30 @@ def id_convert(values, idtype=None):
     return raw['records'][0]
 
 
+def doi_search(doi):
+    """
+    Search Pubmed by DOI to get a Pubmed ID.
+
+    For some reason, this returns more results than above.
+    """
+    if doi is None:
+        raise Exception("No DOI passed to search.")
+    base = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term={}[doi]&retmode=json"
+    surl = base.format(doi)
+    ua = get_user_agent()
+    #Make request with user agent.
+    resp = requests.get(surl, headers=ua)
+    raw = resp.json()
+    results = raw.get('esearchresult')
+    if results is not None:
+        id_list = results.get('idlist')
+        if id_list is None:
+            return None
+        elif len(id_list) > 1:
+            raise Exception("Multiple PMID ids returned for Pubmed DOI search.")
+        else:
+            return id_list[0]
+    return None
+
+
+
