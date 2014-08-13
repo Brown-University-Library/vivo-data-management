@@ -208,6 +208,56 @@ class TestBook(BTest):
             url.toPython() == u"http://www.ncbi.nlm.nih.gov/books/NBK92422/"
         )
 
+class TestChapter(BTest):
+    def setUp(self):
+        self.pmid = '21413284'
+        raw_data = load('pubmed_chapter.json')
+        self.meta = raw_data['result'][self.pmid]
+
+    def test_meta(self):
+        article = Publication()
+        prepped = article.prep(self.meta)
+        self.eq(
+            u'Comprehensive Overview of Methods and Reporting of Meta-Analyses of Test Accuracy',
+            prepped['title']
+        )
+        date = prepped['date']
+        self.eq(2012, date.year)
+
+        authors = prepped['authors']
+        assert(
+            u"Schmid" in authors
+        )
+
+        assert(
+            prepped['url'] == u"http://www.ncbi.nlm.nih.gov/books/NBK92422/"
+        )
+
+    def test_rdf(self):
+        pub_uri = D['n123']
+        book = Publication()
+        meta = book.prep(self.meta, pub_uri=pub_uri)
+        g = book.to_graph(meta)
+        g.namespace_manager = ns_mgr
+        #ids
+        pmid = g.value(subject=pub_uri, predicate=BCITE.pmid)
+        self.eq(self.pmid, pmid.toPython())
+        #No venue
+        venue = g.value(subject=pub_uri, predicate=BCITE.hasVenue)
+        assert(venue == None)
+        ctype = g.value(subject=pub_uri, predicate=RDF.type)
+        self.eq(ctype, BCITE.Book)
+
+        title = g.value(subject=pub_uri, predicate=RDFS.label)
+        assert(
+            title.toPython().startswith(u'Comprehensive Overview of Methods and Reporting of Meta-Analyses of Test Accuracy')
+        )
+
+        url = g.value(subject=pub_uri, predicate=BCITE.url)
+        assert(
+            url.toPython() == u"http://www.ncbi.nlm.nih.gov/books/NBK92422/"
+        )
+
 def test_id_convert():
     """
     Test the idconvert tool.

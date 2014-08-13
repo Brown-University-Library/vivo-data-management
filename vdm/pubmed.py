@@ -44,18 +44,20 @@ class Publication(object):
     def pub_types(self, meta):
         d = {}
         for ptype in meta.get('pubtype', []):
-            if ptype == u'Journal Article':
+            if ptype in [u'Review']:
+                d['a'] = 'bcite:' + ptype
+                return d
+            elif ptype == u'Journal Article':
                 d['a'] = "bcite:Article"
                 return d
             #One to one.
-            elif ptype in [u'Review']:
-                d['a'] = 'bcite:' + ptype
-                return d
             else:
                 d['a'] = "bcite:Citation"
         #Check doctype for book.
         if meta.get('doctype') == u"book":
             d['a'] = 'bcite:Book'
+        if meta.get('doctype') == u"chapter":
+            d['a'] = 'bcite:BookSection'
         return d
 
     def date(self, meta):
