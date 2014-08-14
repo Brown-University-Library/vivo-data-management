@@ -1,0 +1,109 @@
+{
+    "header": {
+        "type": "esummary",
+        "version": "0.3"
+    },
+    "result": {
+        "uids": [
+            "21413284"
+        ],
+        "21413284": {
+            "uid": "21413284",
+            "pubdate": "1996",
+            "epubdate": "",
+            "source": "",
+            "authors": [
+                {
+                    "name": "Brachman PS",
+                    "authtype": "Author",
+                    "clusterid": ""
+                },
+                {
+                    "name": "Baron S",
+                    "authtype": "Editor",
+                    "clusterid": ""
+                }
+            ],
+            "lastauthor": "Brachman PS",
+            "title": "Epidemiology",
+            "sorttitle": "epidemiology ",
+            "volume": "",
+            "issue": "",
+            "pages": "",
+            "lang": [
+                "eng"
+            ],
+            "nlmuniqueid": "",
+            "issn": "",
+            "essn": "",
+            "pubtype": [
+            ],
+            "recordstatus": "PubMed",
+            "pubstatus": "ppublish",
+            "articleids": [
+                {
+                    "idtype": "pubmed",
+                    "idtypen": 1,
+                    "value": "21413284"
+                },
+                {
+                    "idtype": "bookaccession",
+                    "idtypen": 8,
+                    "value": "NBK7993"
+                }
+            ],
+            "history": [
+                {
+                    "pubstatus": "pubmed",
+                    "date": "2011/03/18 06:00"
+                },
+                {
+                    "pubstatus": "medline",
+                    "date": "2011/03/18 06:00"
+                },
+                {
+                    "pubstatus": "entrez",
+                    "date": "2011/03/18 06:00"
+                }
+            ],
+            "references": [
+            ],
+            "attributes": [
+                "Has Abstract"
+            ],
+            "pmcrefcount": 0,
+            "fulljournalname": "",
+            "elocationid": "",
+            "viewcount": 284,
+            "doctype": "chapter",
+            "srccontriblist": [
+                {
+                    "name": "Baron S",
+                    "authtype": "Editor",
+                    "clusterid": ""
+                }
+            ],
+            "booktitle": "Medical Microbiology",
+            "medium": "",
+            "edition": "4th",
+            "publisherlocation": "Galveston (TX)",
+            "publishername": "University of Texas Medical Branch at Galveston",
+            "srcdate": "1996",
+            "reportnumber": "",
+            "availablefromurl": "",
+            "locationlabel": "Chapter 9",
+            "doccontriblist": [
+                {
+                    "name": "Brachman PS",
+                    "authtype": "Author",
+                    "clusterid": ""
+                }
+            ],
+            "docdate": "",
+            "bookname": "mmed",
+            "chapter": "A631",
+            "sortpubdate": "1996/01/01 00:00",
+            "sortfirstauthor": "Brachman PS"
+        }
+    }
+}
