@@ -194,7 +194,8 @@ def doi_search(doi):
     results = raw.get('esearchresult')
     if results is not None:
         id_list = results.get('idlist')
-        if id_list is None:
+        #Check empty list or null value.
+        if (id_list == []) or (id_list is None):
             return None
         elif len(id_list) > 1:
             raise Exception("Multiple PMID ids returned for Pubmed DOI search.")

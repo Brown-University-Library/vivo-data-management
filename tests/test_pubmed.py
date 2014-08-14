@@ -296,3 +296,8 @@ def test_doi_search():
     assert(
         rsp == "24906035"
     )
+
+    #not found
+    doi = u"10.1016/j.tet.2011.10.047"
+    rsp = doi_search(doi)
+    assert( rsp is None )
