@@ -122,6 +122,10 @@ class Publication(object):
         if (venue['label'] is not None):
             bib['venue'] = venue
 
+        #Check for book 
+        book = pull(meta, 'booktitle')
+        if book is not None and bib.get('title') is not None:
+            bib['book'] = book
         #Check for urls
         url = pull(meta, 'availablefromurl')
         if url is not None:

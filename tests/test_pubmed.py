@@ -209,6 +209,7 @@ class TestBook(BTest):
         )
 
 class TestChapter(BTest):
+
     def setUp(self):
         self.pmid = '21413284'
         raw_data = load('pubmed_chapter.json')
@@ -218,19 +219,20 @@ class TestChapter(BTest):
         article = Publication()
         prepped = article.prep(self.meta)
         self.eq(
-            u'Comprehensive Overview of Methods and Reporting of Meta-Analyses of Test Accuracy',
+            u'Epidemiology',
             prepped['title']
         )
         date = prepped['date']
-        self.eq(2012, date.year)
+        self.eq(1996, date.year)
 
         authors = prepped['authors']
         assert(
-            u"Schmid" in authors
+            u"Brachman" in authors
         )
 
-        assert(
-            prepped['url'] == u"http://www.ncbi.nlm.nih.gov/books/NBK92422/"
+        self.eq(
+            u'Medical Microbiology',
+            prepped['book']
         )
 
     def test_rdf(self):
@@ -246,16 +248,16 @@ class TestChapter(BTest):
         venue = g.value(subject=pub_uri, predicate=BCITE.hasVenue)
         assert(venue == None)
         ctype = g.value(subject=pub_uri, predicate=RDF.type)
-        self.eq(ctype, BCITE.Book)
+        self.eq(ctype, BCITE.BookSection)
 
         title = g.value(subject=pub_uri, predicate=RDFS.label)
         assert(
-            title.toPython().startswith(u'Comprehensive Overview of Methods and Reporting of Meta-Analyses of Test Accuracy')
+            title.toPython().startswith(u'Epidemiology')
         )
 
-        url = g.value(subject=pub_uri, predicate=BCITE.url)
+        book = g.value(subject=pub_uri, predicate=BCITE.book)
         assert(
-            url.toPython() == u"http://www.ncbi.nlm.nih.gov/books/NBK92422/"
+            book.toPython().startswith(u'Medical Microbiology')
         )
 
 def test_id_convert():

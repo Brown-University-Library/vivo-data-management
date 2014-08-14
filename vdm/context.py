@@ -25,6 +25,7 @@ publication = {
     "volume": "bcite:volume",
     "issn": "bcite:issn",
     "eissn": "bcite:eissn",
+    "book": "bcite:book",
     "published_in": "bcite:publishedIn",
     "date": {
         "@id": "bcite:date",
