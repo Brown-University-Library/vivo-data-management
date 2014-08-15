@@ -56,7 +56,7 @@ def scrub_pmid(value):
     """
     if value.startswith("PMC"):
         return None
-    match = re.findall(r'(\d{8})', value)
+    match = re.findall(r'([1-9]{1}\d{2,7})', value)
     try:
         v = match[0]
     except IndexError:

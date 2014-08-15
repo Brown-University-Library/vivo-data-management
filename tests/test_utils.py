@@ -115,3 +115,13 @@ def test_scrub_pmid():
     p = u'18633329'
     assert scrub_pmid(p) == p
     assert(scrub_pmid(u'000') is None)
+
+    #7 digit pmid ids
+    assert(
+        scrub_pmid(u'8013034') == u'8013034'
+    )
+
+    assert(
+        scrub_pmid(u'9059992') == u'9059992'
+    )
+
