@@ -25,6 +25,7 @@ AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
 #local ontologies
 BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
 BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
+BPROFILE = Namespace('http://vivo.brown.edu/ontology/profile#')
 
 namespaces = {}
 for k, o in vars().items():
