@@ -28,3 +28,4 @@ def test_url_slug():
 
 def test_clean_parens():
     assert clean_parens('Brown Univ (US)') == 'brown univ'
+    assert clean_parens('Brown Univ (US)', normalized=False) == 'Brown Univ'
