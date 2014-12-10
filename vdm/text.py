@@ -62,12 +62,13 @@ def tokenize(text, splits='COPZ'):
 
 
 PARENS = re.compile('\([^)]*\)')
-
-def text_clean(raw):
-    #normalize
-    norm = normalize(raw)
+def clean_parens(raw, normalized=True):
+    """
+    Normalizes and remove texts in parenthesis from string.
+    """
     #remove parens
-    clean = PARENS.sub(r'', norm)
-    #tokenize
-    tk = tokenize(clean)
-    return u' '.join(tk)
+    val = PARENS.sub(r'', raw).strip()
+    if normalized is True:
+        return normalize(val)
+    else:
+        return val

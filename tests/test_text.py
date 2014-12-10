@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from vdm.text import normalize, tokenize, url_slug
+from vdm.text import normalize, tokenize, url_slug, clean_parens
 
 
 def test_normalize():
@@ -19,7 +19,12 @@ def test_tokenize():
     tokens = [t for t in tokenize("Brown Univ.02912")]
     assert '02912' in tokens
 
+
 def test_url_slug():
     assert url_slug('Brown Univ') == 'brown-univ'
     assert url_slug('Brown univ') == 'brown-univ'
     assert url_slug('Brown.Univ') == 'brown_univ'
+
+
+def test_clean_parens():
+    assert clean_parens('Brown Univ (US)') == 'brown univ'
