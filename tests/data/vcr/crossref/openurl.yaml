@@ -1,0 +1,56 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      User-Agent: [python-requests/2.3.0 CPython/2.7.3 Linux/3.2.0-23-generic]
+    method: GET
+    uri: http://crossref.org/openurl/?format=unixref&issn=1431-0651&pid=noreply%40example.org&noredirect=true&volume=19&date=2015&spage=221
+  response:
+    body: {string: !!python/unicode "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<doi_records>\r\n
+        \ <doi_record key=\"555-555\" owner=\"10.1007\" timestamp=\"2014-12-19 10:31:42\">\r\n
+        \   <crossref>\r\n      <journal>\r\n        <journal_metadata language=\"en\">\r\n
+        \         <full_title>Extremophiles</full_title>\r\n          <abbrev_title>Extremophiles</abbrev_title>\r\n
+        \         <issn media_type=\"print\">1431-0651</issn>\r\n          <issn media_type=\"electronic\">1433-4909</issn>\r\n
+        \       </journal_metadata>\r\n        <journal_issue>\r\n          <publication_date
+        media_type=\"print\">\r\n            <month>1</month>\r\n            <year>2015</year>\r\n
+        \         </publication_date>\r\n          <journal_volume>\r\n            <volume>19</volume>\r\n
+        \         </journal_volume>\r\n          <issue>1</issue>\r\n        </journal_issue>\r\n
+        \       <journal_article publication_type=\"full_text\">\r\n          <titles>\r\n
+        \           <title>Transposon mutagenesis of the extremely thermophilic bacterium
+        Thermus thermophilus HB27</title>\r\n          </titles>\r\n          <contributors>\r\n
+        \           <person_name contributor_role=\"author\" sequence=\"first\">\r\n
+        \             <given_name>Jennifer F.</given_name>\r\n              <surname>Carr</surname>\r\n
+        \           </person_name>\r\n            <person_name contributor_role=\"author\"
+        sequence=\"additional\">\r\n              <given_name>Steven T.</given_name>\r\n
+        \             <surname>Gregory</surname>\r\n            </person_name>\r\n
+        \           <person_name contributor_role=\"author\" sequence=\"additional\">\r\n
+        \             <given_name>Albert E.</given_name>\r\n              <surname>Dahlberg</surname>\r\n
+        \           </person_name>\r\n          </contributors>\r\n          <publication_date
+        media_type=\"online\">\r\n            <month>6</month>\r\n            <day>20</day>\r\n
+        \           <year>2014</year>\r\n          </publication_date>\r\n          <publication_date
+        media_type=\"print\">\r\n            <month>1</month>\r\n            <year>2015</year>\r\n
+        \         </publication_date>\r\n          <pages>\r\n            <first_page>221</first_page>\r\n
+        \           <last_page>228</last_page>\r\n          </pages>\r\n          <publisher_item>\r\n
+        \           <identifier id_type=\"pii\">663</identifier>\r\n          </publisher_item>\r\n
+        \         <crossmark>\r\n            <crossmark_version>1</crossmark_version>\r\n
+        \           <crossmark_policy>10.1007/springer_crossmark_policy</crossmark_policy>\r\n
+        \           <crossmark_domains>\r\n              <crossmark_domain>\r\n                <domain>link.springer.com</domain>\r\n
+        \             </crossmark_domain>\r\n            </crossmark_domains>\r\n
+        \           <crossmark_domain_exclusive>false</crossmark_domain_exclusive>\r\n
+        \         </crossmark>\r\n          <doi_data>\r\n            <doi>10.1007/s00792-014-0663-8</doi>\r\n
+        \           <timestamp>20141219163109</timestamp>\r\n            <resource>http://link.springer.com/10.1007/s00792-014-0663-8</resource>\r\n
+        \           <collection property=\"crawler-based\" setbyID=\"springer\">\r\n
+        \             <item crawler=\"iParadigms\">\r\n                <resource>http://link.springer.com/content/pdf/10.1007/s00792-014-0663-8</resource>\r\n
+        \             </item>\r\n            </collection>\r\n          </doi_data>\r\n
+        \       </journal_article>\r\n      </journal>\r\n    </crossref>\r\n  </doi_record>\r\n</doi_records>"}
+    headers:
+      connection: [close]
+      content-language: [en-US]
+      content-type: [text/xml;charset=UTF-8]
+      date: ['Tue, 06 Jan 2015 17:19:18 GMT']
+      server: [Apache-Coyote/1.1]
+      transfer-encoding: [chunked]
+    status: {code: 200, message: OK}
+version: 1

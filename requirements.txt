@@ -1,6 +1,8 @@
 bleach
 requests
 git+https://github.com/RDFLib/rdflib-jsonld.git
-pytest
 #For date parsing
 python-dateutil
+#Only for development
+pytest
+pyvcr

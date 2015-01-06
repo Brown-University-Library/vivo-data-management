@@ -13,6 +13,8 @@ from vdm.namespaces import ns_mgr, BCITE, D, DCTERMS
 
 import datetime
 
+import vcr
+
 try:
     get_env('TRAVIS')
     TRAVIS = True
@@ -188,7 +190,7 @@ def test_fetch():
     title = cr_rdf.value(subject=URIRef(uri), predicate=DCTERMS.title)
     assert(title.toPython().startswith(u'Preterm Infant Linear Growth and Adiposity Gain'))
 
-@pytest.mark.skipif(TRAVIS is True, reason="run locally")
+@vcr.use_cassette('tests/data/vcr/crossref/metadata_search.yaml')
 def test_metadata_search():
     from vdm.crossref import metadata_search
     meta = metadata_search('10.1001/jama.2011.563')
@@ -196,3 +198,17 @@ def test_metadata_search():
     assert(citation.find(u'Hospitalist Efforts and Improving Discharge') > -1)
     doi = meta[0]['doi']
     assert(doi == u'http://dx.doi.org/10.1001/jama.2011.563')
+
+@vcr.use_cassette('tests/data/vcr/crossref/openurl.yaml')
+def test_by_openurl():
+    from vdm.crossref import by_openurl
+    p = {
+        'issn': '1431-0651',
+        'spage': '221',
+        'volume': '19',
+        'date': '2015'
+    }
+    #with vcr.use_cassette('test/data/vcr/crossref_openurl.yaml', filter_query_parameters=['pid']):
+    title, doi = by_openurl(p, 'noreply@example.org')
+    assert doi == '10.1007/s00792-014-0663-8'
+    assert title.startswith('Transposon mutagenesis')

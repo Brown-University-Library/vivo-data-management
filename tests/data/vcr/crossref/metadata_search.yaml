@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      User-Agent: ['Brown University Library http://vivo.brown.edu/individual/']
+    method: GET
+    uri: http://search.crossref.org/dois?q=10.1001/jama.2011.563
+  response:
+    body: {string: "[\n  {\n    \"doi\": \"http://dx.doi.org/10.1001/jama.2011.563\",\n
+        \   \"score\": 18.593777,\n    \"normalizedScore\": 100,\n    \"title\": \"Hospitalist
+        Efforts and Improving Discharge Planning\u2014Reply\",\n    \"fullCitation\":
+        \"Vincent Mor, 2011, 'Hospitalist Efforts and Improving Discharge Planning\u2014Reply',
+        <i>JAMA</i>, vol. 305, no. 17, p. 1766\",\n    \"coins\": \"ctx_ver=Z39.88-2004&amp;rft_id=info%3Adoi%2Fhttp%3A%2F%2Fdx.doi.org%2F10.1001%2Fjama.2011.563&amp;rfr_id=info%3Asid%2Fcrossref.org%3Asearch&amp;rft.atitle=Hospitalist+Efforts+and+Improving+Discharge+Planning%E2%80%94Reply&amp;rft.jtitle=JAMA&amp;rft.date=2011&amp;rft.volume=305&amp;rft.issue=17&amp;rft.spage=1766&amp;rft.aufirst=Vincent&amp;rft.aulast=Mor&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.au=Vincent+Mor\",\n
+        \   \"year\": \"2011\"\n  }\n]"}
+    headers:
+      access-control-allow-origin: ['*']
+      content-length: ['832']
+      content-type: [application/json;charset=utf-8]
+      date: ['Tue, 06 Jan 2015 17:31:49 GMT']
+      server: [Apache/2.4.7 (Ubuntu)]
+      set-cookie: [rack.session=f053d20d4a4a89ce7e908284772efa356c27a637daf665fc692ffc005778914c;
+          path=/; HttpOnly]
+      status: [200 OK]
+      x-frame-options: [sameorigin]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
