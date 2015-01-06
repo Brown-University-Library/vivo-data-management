@@ -5,4 +5,4 @@ git+https://github.com/RDFLib/rdflib-jsonld.git
 python-dateutil
 #Only for development
 pytest
-pyvcr
+git+https://github.com/kevin1024/vcrpy.git@v1.1.4#egg=vcrpy
