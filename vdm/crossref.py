@@ -2,6 +2,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 from datetime import date
+import json
+import xml.etree.ElementTree as ET
 
 import requests
 
@@ -187,3 +189,42 @@ class Publication(object):
         return g
 
 
+def by_openurl(ourl_params, email):
+    """
+    Lookup the DOI from CrossRef given OpenURL metdata.
+    http://labs.crossref.org/openurl/
+
+    Requires an API key, which is the registered user's email.
+
+    Experience shows these fields are minimally required for articles:
+        - issn
+        - year
+        - spage (start page for article)
+        - volume or issue
+    """
+    cr_url = 'http://crossref.org/openurl/'
+    payload = {
+        'pid': email,
+        'format': 'unixref',
+        'noredirect': 'true',
+    }
+    #Add incoming parameters
+    payload.update(ourl_params)
+    logger.debug("CrossRef url {} with params {}".format(cr_url, json.dumps(payload)))
+    resp = requests.get(cr_url, params=payload)
+    try:
+        root = ET.fromstring(resp.text.encode('utf-8', 'ignore'))
+    except UnicodeEncodeError:
+        logger.info("Error parsing CR response")
+        return
+    title_elem = root.find('./doi_record/crossref/journal/journal_article/titles/title')
+    if title_elem is None:
+        return
+    cr_title = title_elem.text
+    doi_node = root.findall('./doi_record/crossref/journal/journal_article/doi_data/doi')
+    try:
+        doi = doi_node[0].text
+    except IndexError:
+        logger.info("Error parsing DOI from CR response.")
+        return
+    return (cr_title, doi)
