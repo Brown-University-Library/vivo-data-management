@@ -9,4 +9,9 @@ install:
 script:
   - py.test
   - coverage run --source vdm -m py.test
+notifications:
+  email:
+    recipients:
+      - lawlesst@brown.edu
+      - steven_mccauley@brown.edu
 after_success: coveralls
