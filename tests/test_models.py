@@ -91,3 +91,8 @@ class TestFaculty:
         assert {'uri': u'http://vivo.brown.edu/individual/org1', 'label': u'History'}\
             in membership
         assert fac.overview() == u"Researcher"
+
+        related = fac.get_all_related()
+        related_labels = [r['label'] for r in related]
+        assert u"Medicine" in related_labels
+        assert u"History" in related_labels

@@ -18,7 +18,6 @@ DCTERMS = Namespace('http://purl.org/dc/terms/')
 BIBO = Namespace('http://purl.org/ontology/bibo/')
 FOAF = Namespace('http://xmlns.com/foaf/0.1/')
 SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
-SCHEMA = Namespace('http://schema.org/')
 
 #ARQ functions
 AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')

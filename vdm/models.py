@@ -50,6 +50,22 @@ class BaseResource(rdflib.resource.Resource):
                     out.append(d)
         return out
 
+    def get_all_related(self):
+        """
+        Get a list of uri label pairs for all related objects.
+        """
+        rq = """
+        SELECT ?o ?label
+        WHERE {
+            ?s ?p ?o .
+            ?o rdfs:label ?label .
+        }
+        """
+        out = []
+        for uri, label in self.graph.query(rq):
+            out.append({'uri': uri.toPython(), 'label': label.toPython()})
+        return out
+
     def get_first_literal(self, prop):
         """
         Get the first literal for the given property.
