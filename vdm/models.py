@@ -1,19 +1,9 @@
 
 import rdflib
-
-from rdflib import (
-    Literal,
-    BNode,
-    Namespace,
-    URIRef,
-    Graph,
-    RDF,
-    RDFS,
-)
-
+from rdflib import RDFS
 from rdflib.query import ResultException
 
-from vdm.namespaces import FOAF, VIVO, BLOCAL, SCHEMA
+from vdm.namespaces import FOAF, VIVO, BLOCAL, TMP
 
 
 class BaseResource(rdflib.resource.Resource):
@@ -72,6 +62,8 @@ class VResource(BaseResource):
     """
     A Vitro Resource representing a selected set of triples identified
     by passing the init_query to the store.
+
+    Additional methods that are common across resources can be added here.
     """
 
     def __init__(self, uri=None, store=None):
@@ -113,6 +105,15 @@ class VResource(BaseResource):
         except ResultException:
             return None
 
+    def overview(self):
+        return self.get_first_literal(VIVO.overview)
+
+    def full_image(self):
+        return self.get_first_literal(TMP.fullImage)
+
+    def thumbnail(self):
+        return self.get_first_literal(TMP.image)
+
 
 class Person(VResource):
 
@@ -150,11 +151,11 @@ class FacultyMember(VResource):
                 foaf:firstName ?first ;
                 foaf:lastName ?last ;
                 vivo:preferredTitle ?title ;
-                schema:email ?email ;
+                tmp:email ?email ;
                 vivo:overview ?overview ;
-                schema:memberOf ?org ;
+                blocal:hasAffiliation ?org ;
                 vivo:hasResearchArea ?ra ;
-                schema:image ?photo ;
+                tmp:image ?photo ;
                 tmp:fullImage ?miURL ;
                 blocal:hasGeographicResearchArea ?rag .
             #affils
@@ -223,7 +224,7 @@ class FacultyMember(VResource):
         return self.get_first_literal(FOAF.lastName)
 
     def email(self):
-        return self.get_first_literal(SCHEMA.email)
+        return self.get_first_literal(TMP.email)
 
     def middle(self):
         return self.get_first_literal(VIVO.middleName)
@@ -232,7 +233,7 @@ class FacultyMember(VResource):
         return self.get_first_literal(VIVO.preferredTitle)
 
     def membership(self):
-        return self.get_related(SCHEMA.memberOf)
+        return self.get_related(BLOCAL.hasAffiliation)
 
     def topics(self):
         return self.get_related(VIVO.hasResearchArea)

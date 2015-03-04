@@ -58,7 +58,8 @@ class TestFaculty:
             vivo:primaryEmail "jcarberry@brown.edu" ;
             blocal:hasAffiliation d:org1 ;
             vivo:preferredTitle "Prof of History" ;
-            vivo:hasResearchArea d:topic1 .
+            vivo:hasResearchArea d:topic1 ;
+            vivo:overview "Researcher" .
 
         #Fac with minimal attributes.
         d:jsmith a vivo:FacultyMember ;
@@ -89,3 +90,4 @@ class TestFaculty:
         membership = fac.membership()
         assert {'uri': u'http://vivo.brown.edu/individual/org1', 'label': u'History'}\
             in membership
+        assert fac.overview() == u"Researcher"
