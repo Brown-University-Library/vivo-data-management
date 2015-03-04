@@ -18,10 +18,11 @@ import uuid
 from utils import get_env
 
 from vdm.namespaces import (
-    namespaces, #dict of namespaces
+    namespaces,  #dict of namespaces
     ns_mgr,
-    D, #data namespace
+    D,  #data namespace
 )
+
 
 class BaseBackend(object):
     """
@@ -118,9 +119,10 @@ class VIVOBackend(BaseBackend):
     def __init__(self, endpoint):
         graph = ConjunctiveGraph('SPARQLStore')
         graph.open(endpoint)
-        graph.namespace_manager=ns_mgr
+        graph.namespace_manager = ns_mgr
         self.graph = graph
-        self.default_graph = 'http://vitro.mannlib.cornell.edu/default/vitro-kb-2'
+        self.default_graph = \
+            'http://vitro.mannlib.cornell.edu/default/vitro-kb-2'
 
     def do_update(self, query):
         logger.debug(query)
@@ -145,9 +147,11 @@ class VIVOBackend(BaseBackend):
             return u"DELETE DATA { GRAPH <%s> { %s } }" % (nameg, stmts)
 
     def add_remove(self, add_g, subtract_g, name=None):
+        """
         #DELETE { GRAPH <g1> { a b c } } INSERT { GRAPH <g1> { x y z } }
         #http://www.w3.org/TR/sparql11-update/#deleteInsert
         #return self.primitive_edit(add_g, subtract_g)
+        """
         rq = u''
         add_size = len(add_g)
         remove_size = len(subtract_g)
@@ -169,13 +173,25 @@ class FusekiGraph(ConjunctiveGraph):
     def __init__(self, endpoint):
         ConjunctiveGraph.__init__(self, 'SPARQLStore')
         self.open(endpoint)
-        self.namespace_manager=ns_mgr
+        self.namespace_manager = ns_mgr
+
+
+def work_graph():
+    """
+    Get an in memory graph with the default
+    namespace_manager set.
+    """
+    g = Graph()
+    g.namespace_manager = ns_mgr
+    return g
+
 
 class VIVOEditError(Exception):
     def __init__self(self, message, Errors):
         #http://stackoverflow.com/questions/1319615/proper-way-to-declare-custom-exceptions-in-modern-python
         Exception.__init__(self, message)
         self.Errors = Errors
+
 
 class VIVODataError(Exception):
     def __init__self(self, message, Errors):
