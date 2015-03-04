@@ -18,6 +18,7 @@ DCTERMS = Namespace('http://purl.org/dc/terms/')
 BIBO = Namespace('http://purl.org/ontology/bibo/')
 FOAF = Namespace('http://xmlns.com/foaf/0.1/')
 SKOS = Namespace('http://www.w3.org/2004/02/skos/core#')
+SCHEMA = Namespace('http://schema.org/')
 
 #ARQ functions
 AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
@@ -26,6 +27,9 @@ AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
 BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
 BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
 BPROFILE = Namespace('http://vivo.brown.edu/ontology/profile#')
+
+#tmp graph for in memory graphs
+TMP = Namespace('http://localhost/tmp#')
 
 namespaces = {}
 for k, o in vars().items():
