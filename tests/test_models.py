@@ -49,7 +49,7 @@ class TestFaculty:
         @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
         @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
         @prefix vivo:  <http://vivoweb.org/ontology/core#> .
-        @prefix d: <http://vivo.brown.edu/individual/>.
+        @prefix d: <http://vivo.school.edu/individual/>.
 
         d:jcarberry a vivo:FacultyMember;
             rdfs:label "Carberry, Josiah" ;
@@ -88,7 +88,7 @@ class TestFaculty:
         assert fac.email() == "jcarberry@brown.edu"
         assert fac.title() == u"Prof of History"
         membership = fac.membership()
-        assert {'uri': u'http://vivo.brown.edu/individual/org1', 'label': u'History'}\
+        assert {'uri': u'http://vivo.school.edu/individual/org1', 'label': u'History'}\
             in membership
         assert fac.overview() == u"Researcher"
 
