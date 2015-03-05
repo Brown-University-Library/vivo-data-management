@@ -10,7 +10,6 @@ This library packages commonly used tools for managing VIVO data at Brown.
 
 Including:
 
-
  - CrossRef search api
  - CrossRef lookup by [OpenURL](http://labs.crossref.org/openurl/) (requires key)
  - [Profiles Research Networking Software (RNS) Disambiguation Engine](http://profiles.catalyst.harvard.edu/docs/ProfilesRNS_DisambiguationEngine.pdf)from the Harvard Catalyst project
@@ -19,6 +18,13 @@ Including:
  - Text processing utilities for matching author names
  - Vitro/VIVO SPARQL Update client
 
+##Installation
+
+Use [pip](https://pypi.python.org/pypi/pip) to install directly from Github.
+
+`$pip install git+https://github.com/Brown-University-Library/vivo-data-management.git`
+
+This has been developed and tested with Python 2.7.  It's not guaranteed to work with other versions of Python.
 
 ##Development
 ###Running tests
