@@ -12,11 +12,11 @@ Including:
 
  - CrossRef search api
  - CrossRef lookup by [OpenURL](http://labs.crossref.org/openurl/) (requires key)
- - [Profiles Research Networking Software (RNS) Disambiguation Engine](http://profiles.catalyst.harvard.edu/docs/ProfilesRNS_DisambiguationEngine.pdf)from the Harvard Catalyst project
+ - [Profiles Research Networking Software (RNS) Disambiguation Engine](http://profiles.catalyst.harvard.edu/docs/ProfilesRNS_DisambiguationEngine.pdf) from the Harvard Catalyst project
  -  Pubmed API
  - Pubmed [ID Converter API](https://www.ncbi.nlm.nih.gov/pmc/tools/id-converter-api/)
  - Text processing utilities for matching author names
- - Vitro/VIVO SPARQL Update client
+ - [Vitro/VIVO SPARQL Update API](https://wiki.duraspace.org/display/VIVO/The+SPARQL+Update+API) client
 
 ##Installation
 
