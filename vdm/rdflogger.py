@@ -53,9 +53,8 @@ def get_prov_class(class_string):
 		raise
 	return obj_type
 
-def make_activity_datetime(actv_uri):
+def make_activity_datetime(actv_uri, datetime):
 	g = Graph()
-	datetime = make_timestamp()
 	triples = [
 		(actv_uri, PROV['startedAtTime'], datetime),
 		(actv_uri, PROV['endedAtTime'], datetime),
@@ -108,7 +107,8 @@ class ActivityLogger(object):
 		activity_rdf = make_prov_object(
 			self.activity_uri, self.label, 'activity'
 			)
-		dt_rdf = make_activity_datetime(self.activity_uri)
+		dt = make_timestamp()
+		dt_rdf = make_activity_datetime(self.activity_uri, dt)
 		self.graph += activity_rdf
 		self.graph += dt_rdf
 
