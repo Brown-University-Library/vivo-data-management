@@ -30,7 +30,7 @@ class PyTest(TestCommand):
 
 setup(
     name = 'vivo-data-management',
-    version = '0.0.2',
+    version = '0.0.3',
     url = 'http://github.com/Brown-University-Library/vivo-data-management',
     author = 'Ted Lawless',
     author_email = 'tlawless@brown.edu',
