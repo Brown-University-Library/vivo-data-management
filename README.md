@@ -22,7 +22,7 @@ Including:
 
 Use [pip](https://pypi.python.org/pypi/pip) to install directly from Github.
 
-`$pip install git+https://github.com/Brown-University-Library/vivo-data-management.git`
+`$ pip install git+https://github.com/Brown-University-Library/vivo-data-management.git`
 
 This has been developed and tested with Python 2.7.  It's not guaranteed to work with other versions of Python.
 
