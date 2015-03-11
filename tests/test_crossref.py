@@ -46,10 +46,11 @@ class TestArticle(BTest):
         g.namespace_manager = ns_mgr
         #check venue
         rq = """
-        select ?issn
+        select ?issn ?vtype
         where {
             ?p bcite:hasVenue ?venue .
             ?venue bcite:issn ?issn .
+            ?venue a ?vtype .
         }
         """
         results = [r for r in g.query(rq)]
@@ -57,6 +58,7 @@ class TestArticle(BTest):
             raise Exception("Query returned no results.")
         for row in results:
             self.eq(u'0022-3476', row.issn.toPython())
+            self.eq(row.vtype, BCITE.Venue)
 
         date_literal = g.value(subject=uri, predicate=BCITE.date)
         date_value = date_literal.toPython()
