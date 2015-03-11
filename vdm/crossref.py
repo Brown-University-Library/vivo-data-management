@@ -167,6 +167,7 @@ class Publication(object):
         venue['label'] = pull(meta, 'container-title')
         venue['issn'] = pull(meta, 'ISSN')
         venue['isbn'] = pull(meta, 'ISBN')
+        venue['a'] = 'bcite:Venue'
         bib['venue'] = venue
         bib['published_in'] = pull(meta, 'container-title')
 
