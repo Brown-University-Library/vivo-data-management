@@ -59,58 +59,85 @@ import traceback
 import uuid
 import datetime
 
-from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
+# from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
 
 from vdm.namespaces import D, BCITE
 
-PROV = Namespace('http://www.w3.org/ns/prov#')
-BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
+PROV = 'http://www.w3.org/ns/prov#'
+BPROV = 'http://vivo.brown.edu/ontology/provenance#'
+OWL = 'http://www.w3.org/2002/07/owl#'
+RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 
 class Edge(object):
 	def __init__(self):
 		pass
 
-class Node(object):
-	def __init__(self):
-		pass
+# class Node(object):
+# 	def __init__(self):
+# 		self.values = []
 
-class Entity(Node):
-	def __init__(self, rdf_class=None, uri=None):
+# 	def attach(self, value):
+# 		self.values.append(value)
+
+# 	@property
+# 	def 
+
+class Entity(object):
+	def __init__(self, label=None, uri=None):
 		self.instance_uri = '{0}'.format(uri)
-		self.label = ''
-		self.classes = [rdf_class]
-		self.properties = []
+		self.label = '{0}'.format(label)
+		self.rdf_type = [OWL + 'Thing',]
+		self.ld_context = {
+			"@context": {
+				"label": RDFS + 'label',
+				"rdf_type": RDF + 'type',
+			}
+		}
+	
+	def mint_uuid_uri(self):
+		unique = 'n' + uuid.uuid4().hex
+		uri = D[unique]
+		self.instance_uri = uri
 
-	def add_property(self, prop, obj):
-		self.__set__(prop, obj)
-
-class RDFClass(Edge):
+class PROVActivity(Entity):
 	def __init__(self):
-		self.class_uri = ''
-		self.class_label = ''
+		super(PROVActivity, self).__init__()
+		self.rdf_type.append(
+			PROV + 'Activity'
+		)
+		self.was_associated_with = []
+		self.used = []
+		self.generated_statement = []
+		new_context = {
+			'was_associated_with': {
+				'@id': PROV + 'wasAssociatedWith',
+				'@type': ['@id', PROV + 'Agent']
+			},
+			'used': {
+				'@id': PROV + 'used',
+				'@type': ['@id', PROV + 'Entity']
+			},
+			'generated_statement': {
+				'@id': BPROV + 'generatedStatement',
+				'@type': ['@id', RDF + 'Statement']
+			}
+		}
+		for k, v in new_context.items():
+			self.ld_context['@context'][k] = v
 
-class Activity(RDFClass):
+class RDFStatement(Entity):
 	def __init__(self):
-		self.class_uri = 'http://www.w3.org/ns/prov#Activity'
-		self.class_label = 'Activity'
-
-class DataProperty(Edge):
-	def __init__(self):
-		self.property_uri = ''
-		self.property_label = ''
-
-class ObjectProperty(Edge):
-	def __init__(self):
-		self.property_uri = ''
-		self.property_label = ''
-		self.domain = ''
-
-
-# def mint_uuid_uri():
-# 	unique = 'n' + uuid.uuid4().hex
-# 	uri = D[unique]
-# 	return uri
+		super(RDFStatement, self).__init__()
+		self.rdf_type.append(
+			RDF + 'Statement'
+		)
+		self.action = []
+		self.subject = []
+		self.predicate = []
+		self.object = []
+		self.statement_generated_by = []
 
 # def make_timestamp():
 # 	dt = datetime.datetime.utcnow()
