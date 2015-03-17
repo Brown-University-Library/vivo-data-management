@@ -84,33 +84,46 @@ class Edge(object):
 # 	@property
 # 	def 
 
-class Entity(object):
+class LODO(object):
 	def __init__(self, label=None, uri=None):
-		self.instance_uri = '{0}'.format(uri)
-		self.label = '{0}'.format(label)
-		self.rdf_type = [OWL + 'Thing',]
-		self.ld_context = {
-			"@context": {
-				"label": RDFS + 'label',
-				"rdf_type": RDF + 'type',
-			}
+		self.ld_instance = {
+			"@id": None,
+			"@type": list(),
 		}
-	
-	def mint_uuid_uri(self):
-		unique = 'n' + uuid.uuid4().hex
-		uri = D[unique]
-		self.instance_uri = uri
+		self.ld_context = {
+			"@context": {}
+		}
+		self.local_context = {
+			"label": RDFS + 'label',
+		}
+		self.rdf_type = OWL + 'Thing'
+		self.json_ld = {}
+		self.initialize_ld()
 
-class PROVActivity(Entity):
-	def __init__(self):
-		super(PROVActivity, self).__init__()
-		self.rdf_type.append(
-			PROV + 'Activity'
+	def init_json_ld(self):
+		self.json_ld = self.ld_context.copy()
+		self.json_ld.update(self.ld_instance)
+
+	def update_ld_context(self):
+		self.ld_context["@context"].update(
+			self.local_context
 		)
-		self.was_associated_with = []
-		self.used = []
-		self.generated_statement = []
-		new_context = {
+
+	def update_ld_instance(self):
+		self.ld_instance['@type'].append(self.rdf_type)
+		for k in self.local_context.keys():
+			self.ld_instance[k] = set()
+
+	def initialize_ld(self):
+		self.update_ld_context()
+		self.update_ld_instance()
+		self.init_json_ld()
+
+class PROVactivity(LODO):
+	def __init__(self):
+		super(PROVactivity, self).__init__()
+		self.rdf_type = PROV + 'Activity'
+		self.local_context = {
 			'was_associated_with': {
 				'@id': PROV + 'wasAssociatedWith',
 				'@type': ['@id', PROV + 'Agent']
@@ -124,20 +137,26 @@ class PROVActivity(Entity):
 				'@type': ['@id', RDF + 'Statement']
 			}
 		}
-		for k, v in new_context.items():
-			self.ld_context['@context'][k] = v
+		self.initialize_ld()
 
-class RDFStatement(Entity):
+	def was_associated_with(self, agent=None):
+		if agent is None:
+			return self.ld_instance['was_associated_with']
+		else:
+			self.ld_instance['was_associated_with'].add(agent)
+
+class RDFstatement(LODO):
 	def __init__(self):
 		super(RDFStatement, self).__init__()
-		self.rdf_type.append(
-			RDF + 'Statement'
-		)
-		self.action = []
-		self.subject = []
-		self.predicate = []
-		self.object = []
-		self.statement_generated_by = []
+		self.rdf_type = RDF + 'Statement'
+		self.local_context = {
+			'action': BPROV + 'action',
+			'subject': RDF + 'subject',
+			'predicate': RDF + 'predicate',
+			'object': RDF + 'object',
+			'statement_generated_by': BPROV + 'statementGeneratedBy'
+		}
+		self.initialize_ld()
 
 # def make_timestamp():
 # 	dt = datetime.datetime.utcnow()
