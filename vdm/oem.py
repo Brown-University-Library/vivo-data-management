@@ -100,24 +100,18 @@ class LODO(object):
 		self.json_ld = {}
 		self.initialize_ld()
 
-	def init_json_ld(self):
-		self.json_ld = self.ld_context.copy()
-		self.json_ld.update(self.ld_instance)
-
-	def update_ld_context(self):
+	def initialize_ld(self):
+		#self.update_ld_context()
 		self.ld_context["@context"].update(
 			self.local_context
 		)
-
-	def update_ld_instance(self):
+		#self.update_ld_instance()
 		self.ld_instance['@type'].append(self.rdf_type)
 		for k in self.local_context.keys():
 			self.ld_instance[k] = set()
-
-	def initialize_ld(self):
-		self.update_ld_context()
-		self.update_ld_instance()
-		self.init_json_ld()
+		#self.init_json_ld()
+		self.json_ld = self.ld_context.copy()
+		self.json_ld.update(self.ld_instance)
 
 class PROVactivity(LODO):
 	def __init__(self):
@@ -147,7 +141,7 @@ class PROVactivity(LODO):
 
 class RDFstatement(LODO):
 	def __init__(self):
-		super(RDFStatement, self).__init__()
+		super(RDFstatement, self).__init__()
 		self.rdf_type = RDF + 'Statement'
 		self.local_context = {
 			'action': BPROV + 'action',
