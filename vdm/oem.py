@@ -3,62 +3,10 @@
 ##Sketches##
 ############
 
-class Attribute(object):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-
-class Entity(object):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.class = [OWLthing(), *RDFclass]
-		self.properties = [RDFlabel, RDFStype, ]
-
-class RDFclass(Entity):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.superclass = list(RDFClass)
-
-class PROVactivity(Entity):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.class = list(RDFClass)
-		self.properties = list(RDFProperty)
-		for p in self.properties:
-			self.p = list(objects)
-
-class PROVentity(Entity):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.class = list(RDFClass)
-		self.properties = list(RDFProperty)
-		for p in self.properties:
-			self.p = list(objects)
-
-class PROVagent(Entity):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.class = list(RDFClass)
-		self.properties = list(RDFProperty)
-		for p in self.properties:
-			self.p = list(objects)
-
-class RDFproperty(Attribute):
-	def __init__(self):
-		self.uri = uri
-		self.label = label
-		self.domain = domain #OEM Class?
-		self.range = range
 '''
 import traceback
 import uuid
 import datetime
-from types import MethodType
 
 # from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
@@ -102,15 +50,9 @@ class LODO(object):
 		#add methods based on JSON LD properties
 		self._add_property_methods()
 
-	def _object_property(self, obj=None):
-		if obj is None:
-			return self.ld_instance[_object_property.__name__]
-		else:
-			self.ld_instance[_object_property.__name__].add(obj)
-
 	def _add_property_methods(self):
 		for prop in self.local_context.keys():
-			setattr(self,prop,self._object_property)
+			setattr(self,prop,ObjectProperty(prop, self))
 
 class PROVactivity(LODO):
 	def __init__(self):
@@ -132,12 +74,6 @@ class PROVactivity(LODO):
 		}
 		self._initialize_ld()
 
-	# def was_associated_with(self, agent=None):
-	# 	if agent is None:
-	# 		return self.ld_instance['was_associated_with']
-	# 	else:
-	# 		self.ld_instance['was_associated_with'].add(agent)
-
 class RDFstatement(LODO):
 	def __init__(self):
 		super(RDFstatement, self).__init__()
@@ -150,6 +86,20 @@ class RDFstatement(LODO):
 			'statement_generated_by': BPROV + 'statementGeneratedBy'
 		}
 		self._initialize_ld()
+
+class ObjectProperty(object):
+    def __init__(self, name, lodo):
+        self.name = name
+        self.lodo = lodo
+
+    def __call__(self, obj, remove=False):
+    	if remove:
+    		self.lodo.ld_instance[self.name].remove(obj)
+    	else:
+	        self.lodo.ld_instance[self.name].add(obj)
+
+    def clear(self):
+    	self.lodo.ld_instance[self.name].clear()
 
 # def make_timestamp():
 # 	dt = datetime.datetime.utcnow()
