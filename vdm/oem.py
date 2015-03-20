@@ -7,6 +7,7 @@
 import traceback
 import uuid
 import datetime
+import pprint
 
 # from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
@@ -35,6 +36,15 @@ class LODO(object):
 		self.json_ld = {}
 		self._initialize_ld()
 
+	def __repr__(self):
+		if self.ld_instance["@id"] is None:
+			return "{0} (Missing ID)".format(self.rdf_type)
+		else:
+			return self.ld_instance["@id"]
+
+	def show(self):
+		pprint.pprint(self.ld_instance)
+
 	def _initialize_ld(self):
 		#self.update_ld_context()
 		self.ld_context["@context"].update(
@@ -44,11 +54,12 @@ class LODO(object):
 		self.ld_instance['@type'].append(self.rdf_type)
 		for k in self.local_context.keys():
 			self.ld_instance[k] = set()
-		#self.init_json_ld()
-		self.json_ld = self.ld_context.copy()
-		self.json_ld.update(self.ld_instance)
 		#add methods based on JSON LD properties
 		self._add_property_methods()
+
+	def _update_json_ld(self):
+		self.json_ld = self.ld_context.copy()
+		self.json_ld.update(self.ld_instance)		
 
 	def _add_property_methods(self):
 		for prop in self.local_context.keys():
@@ -91,11 +102,17 @@ class ObjectProperty(object):
     def __init__(self, name, lodo):
         self.name = name
         self.lodo = lodo
+        self.values = set()
+
+    def __repr__(self):
+    	return set.__repr__(self.values)
 
     def __call__(self, obj, remove=False):
     	if remove:
+    		self.values.remove(obj)
     		self.lodo.ld_instance[self.name].remove(obj)
     	else:
+    		self.values.add(obj)
 	        self.lodo.ld_instance[self.name].add(obj)
 
     def clear(self):
