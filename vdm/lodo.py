@@ -107,6 +107,9 @@ class ObjectProperty(object):
     def __repr__(self):
     	return set.__repr__(self.values)
 
+    def __get__(self, instance, owner):
+    	return instance.ld_instance[self.name]
+
     def __call__(self, obj, remove=False):
     	if remove:
     		self.values.remove(obj)
@@ -116,6 +119,7 @@ class ObjectProperty(object):
 	        self.lodo.ld_instance[self.name].add(obj)
 
     def clear(self):
+    	self.values.clear()
     	self.lodo.ld_instance[self.name].clear()
 
 # def make_timestamp():
