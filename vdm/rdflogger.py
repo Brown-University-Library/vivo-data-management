@@ -96,6 +96,9 @@ class ActivityLogger(object):
 	def remove_rdf(self, graph):
 		self.remove_triples += graph
 
+	def add_source(self, source):
+		self.entities.append(source)
+
 	def add_software_agent(self):
 		#consider also LogRecord.pathname
 		#Need custom Handler
@@ -111,6 +114,11 @@ class ActivityLogger(object):
 		dt_rdf = make_activity_datetime(self.activity_uri, dt)
 		self.graph += activity_rdf
 		self.graph += dt_rdf
+		if self.activity_subclass:
+			subclass_rdf = Graph(
+				(self.activity_uri, RDF['type'], self.activity_subclass)
+			)
+			self.graph += subclass_rdf
 
 	def graph_agents(self):
 		for agent in self.agents:
@@ -131,14 +139,14 @@ class ActivityLogger(object):
 	def graph_statements(self):
 		for s,p,o in self.add_triples.triples((None,None,None)):
 			stmt = mint_uuid_uri()
-			action = D['bprov-Add']
+			action = 'add'
 			stmt_rdf = make_statement_rdf(
 				stmt,self.activity_uri,action,s,p,o
 				)
 			self.graph += stmt_rdf
 		for s,p,o in self.remove_triples.triples((None,None,None)):
 			stmt = mint_uuid_uri()
-			action = D['bprov-Remove']
+			action = 'remove'
 			stmt_rdf = make_statement_rdf(
 				stmt,self.activity_uri,action,s,p,o
 				)
@@ -183,3 +191,9 @@ class VMLogger(ActivityLogger):
 
 	def add_faculty_agent(self, shortid):
 		self.agents.append(shortid)
+
+class FISLogger(ActivityLogger):
+	def __init__(self, subclass=None):
+		super(FISLogger, self).__init__()
+		if subclass:
+			self.activity_subclass = BPROV[subclass]
