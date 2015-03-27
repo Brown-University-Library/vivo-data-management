@@ -14,7 +14,7 @@ BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
 logger = logging.getLogger('rdflog')
 logger.setLevel(11)
 # This must be an absolute path
-fh = logging.FileHandler('/work/staging/rdflog.nt')
+fh = logging.FileHandler('/work/staging/rdflog.n3')
 logger.addHandler(fh)
 logger.propagate = False
 
@@ -84,6 +84,7 @@ class ActivityLogger(object):
 		self.label = 'Activity'
 		self.logger = logger
 		self.activity_uri = mint_uuid_uri()
+		self.activity_subclass = None
 		self.entities = []
 		self.agents = []
 		self.add_triples = Graph()
@@ -115,10 +116,8 @@ class ActivityLogger(object):
 		self.graph += activity_rdf
 		self.graph += dt_rdf
 		if self.activity_subclass:
-			subclass_rdf = Graph(
-				(self.activity_uri, RDF['type'], self.activity_subclass)
-			)
-			self.graph += subclass_rdf
+			sub = (self.activity_uri, RDF['type'], self.activity_subclass)
+			self.graph.add(sub)
 
 	def graph_agents(self):
 		for agent in self.agents:
@@ -139,14 +138,14 @@ class ActivityLogger(object):
 	def graph_statements(self):
 		for s,p,o in self.add_triples.triples((None,None,None)):
 			stmt = mint_uuid_uri()
-			action = 'add'
+			action = Literal('add')
 			stmt_rdf = make_statement_rdf(
 				stmt,self.activity_uri,action,s,p,o
 				)
 			self.graph += stmt_rdf
 		for s,p,o in self.remove_triples.triples((None,None,None)):
 			stmt = mint_uuid_uri()
-			action = 'remove'
+			action = Literal('remove')
 			stmt_rdf = make_statement_rdf(
 				stmt,self.activity_uri,action,s,p,o
 				)
@@ -157,7 +156,7 @@ class ActivityLogger(object):
 		self.graph_agents()
 		self.graph_entities()
 		self.graph_statements()
-		nt = self.graph.serialize(format='nt')
+		nt = self.graph.serialize(format='n3')
 		self.logger.warning(nt)
 
 class CRHLogger(ActivityLogger):
@@ -187,13 +186,12 @@ class VMLogger(ActivityLogger):
 	"""
 	def __init__(self):
 		super(VMLogger, self).__init__()
-		self.label = 'VIVO Manger Logger'
+		self.label = 'VIVO Manager Logger'
 
 	def add_faculty_agent(self, shortid):
 		self.agents.append(shortid)
 
 class FISLogger(ActivityLogger):
-	def __init__(self, subclass=None):
+	def __init__(self):
 		super(FISLogger, self).__init__()
-		if subclass:
-			self.activity_subclass = BPROV[subclass]
+		self.activity_subclass = BPROV['FISFacultyFeed']
