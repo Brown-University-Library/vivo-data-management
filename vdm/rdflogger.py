@@ -1,4 +1,5 @@
 import logging
+from logging import handlers
 import traceback
 import uuid
 import datetime
@@ -14,7 +15,13 @@ BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
 logger = logging.getLogger('rdflog')
 logger.setLevel(11)
 # This must be an absolute path
-fh = logging.FileHandler('/work/staging/rdflog.n3')
+path = '/work/staging/test-logs/rdflog.nt'
+fh = handlers.TimedRotatingFileHandler(
+	path,
+	when='d',
+	interval=1,
+	backupCount=30
+	)
 logger.addHandler(fh)
 logger.propagate = False
 
@@ -156,7 +163,7 @@ class ActivityLogger(object):
 		self.graph_agents()
 		self.graph_entities()
 		self.graph_statements()
-		nt = self.graph.serialize(format='n3')
+		nt = self.graph.serialize(format='nt')
 		self.logger.warning(nt)
 
 class CRHLogger(ActivityLogger):
