@@ -1,11 +1,11 @@
 import logging
-from logging import handlers
 import traceback
 import uuid
 import datetime
 
 from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
+from rdflib.resource import Resource
 
 from vdm.namespaces import D, BCITE
 
@@ -32,68 +32,30 @@ def make_timestamp():
 	tstamp = Literal(dt,datatype=XSD.dateTime)
 	return tstamp
 
-def make_prov_object(uri, label, prov_class):
-	label_literal = Literal(label)
-	prov_type = get_prov_class(prov_class)
-	g = Graph()
-	triples = [
-		(uri, RDF['type'], prov_type),
-		(uri, RDFS['label'], label_literal),
-	]
-	for t in triples:
-		g.add(t)
-	return g
-
-def get_prov_class(class_string):
-	class_string = class_string.lower()
-	class_map = {
-		'activity': PROV['Activity'],
-		'entity': PROV['Entity'],
-		'agent': PROV['Agent']
-	}
-	try:
-		obj_type = class_map[class_string]
-	except KeyError:
-		raise
-	return obj_type
-
-def make_activity_datetime(actv_uri, datetime):
-	g = Graph()
-	triples = [
-		(actv_uri, PROV['startedAtTime'], datetime),
-		(actv_uri, PROV['endedAtTime'], datetime),
-	]
-	for t in triples:
-		g.add(t)
-	return g
-
-def make_statement_rdf(stmt_uri,activity_uri,action,s,p,o):
-	g = Graph()
-	triples = [
-		(stmt_uri, RDF['type'], RDF['Statement']),
-		(stmt_uri, BPROV['action'], action),
-		(stmt_uri, BPROV['statmentGeneratedBy'], activity_uri),
-		(activity_uri, BPROV['generatedStatement'], stmt_uri),
-		(stmt_uri, RDF['subject'], s),
-		(stmt_uri, RDF['predicate'], p),
-		(stmt_uri, RDF['object'], o)
-	]
-	for t in triples:
-		g.add(t)
-	return g
-
-
-class ActivityLogger(object):
-	def __init__(self):
-		self.label = 'Activity'
+class RDFLogger(object):
+	def __init__(self, activity_class=None):
 		self.logger = logger
-		self.activity_uri = mint_uuid_uri()
-		self.activity_subclass = None
-		self.entities = []
-		self.agents = []
+		self.activity_uri = ''
 		self.add_triples = Graph()
 		self.remove_triples = Graph()
 		self.graph = Graph()
+		self.add_activity(activity_class)
+
+	def add_activity(self, activity_class=None):
+		uri = mint_uuid_uri()
+		activity_res = Resource(self.graph, uri)
+		self.activity_uri = uri
+		activity_res.add(RDF['type'], PROV['Activity'])
+		dt = make_timestamp()
+		activity_res.add(PROV['startedAtTime'], dt)
+		activity_res.add(PROV['endedAtTime'], dt)
+		if activity_class:
+			activity_res.add(RDF['type'], activity_class)
+			activity_label = activity_class
+		else:
+			activity_label = 'Activity'
+		activity_label += ': {0}'.format(dt)
+		activity_res.add(RDFS['label'], activity_label)
 
 	def add_rdf(self, graph):
 		self.add_triples += graph
@@ -101,67 +63,58 @@ class ActivityLogger(object):
 	def remove_rdf(self, graph):
 		self.remove_triples += graph
 
+	def log(self):
+		self.graph_statements()
+		nt = self.graph.serialize(format='nt')
+		self.logger.warning(nt)
+
+	def graph_statements(self):
+		for s,p,o in self.add_triples.triples((None,None,None)):
+			action = BPROV['Add']
+			self.add_statement(action,s,p,o)
+		for s,p,o in self.remove_triples.triples((None,None,None)):
+			action = BPROV['Remove']
+			self.add_statement(action,s,p,o)
+
+	def add_statement(action,s,p,o):
+		uri = mint_uuid_uri()
+		stmt_res = (self.graph, uri)
+		stmt_res.add(RDF['type'], RDF['Statement'])
+		stmt_res.add(BPROV['action'], action)
+		stmt_res.add(BPROV['statmentGeneratedBy'], self.uri)
+		stmt_res.add(RDF['subject'], s))
+		stmt_res.add(RDF['predicate'], p)
+		stmt_res.add(RDF['object'], o)
+		inv_triple = (self.uri, BPROV['generatedStatement'], uri)
+		self.graph += inv_triple
+
+	#########################
+	###### Convenience ######
+    ####### Functions  ######
+    #########################
+
 	def add_source(self, source):
-		self.entities.append(source)
+		uri = mint_uuid_uri()
+		src_res = Resource(self.graph, uri)
+		src_res.add(RDF['type'], PROV['Entity'])
+		src_res.add(RDFS['label'], source)
+		used_triple = (self.uri, PROV['used'], uri)
+		self.graph += asc_triple
 
 	def add_software_agent(self):
 		#consider also LogRecord.pathname
 		#Need custom Handler
 		stack = traceback.extract_stack(limit=2)[0]
-		swAgent = 'Func: {2} File: {0} Line: {1}'.format(*stack)
-		self.agents.append(swAgent)
+		sw_label = 'Func: {2} File: {0} Line: {1}'.format(*stack)
+		uri = mint_uuid_uri()
+		sw_res = Resource(self.graph, uri)
+		sw_res.add(RDF['type'], PROV['SoftwareAgent'])
+		sw_res.add(RDFS['label'], sw_label)
+		asc_triple = (self.uri, PROV['wasAssociatedWith'], uri)
+		self.graph += asc_triple
 
-	def graph_activity(self):
-		activity_rdf = make_prov_object(
-			self.activity_uri, self.label, 'activity'
-			)
-		dt = make_timestamp()
-		dt_rdf = make_activity_datetime(self.activity_uri, dt)
-		self.graph += activity_rdf
-		self.graph += dt_rdf
-		if self.activity_subclass:
-			sub = (self.activity_uri, RDF['type'], self.activity_subclass)
-			self.graph.add(sub)
+	#def add_user_agent(self, shortid):
 
-	def graph_agents(self):
-		for agent in self.agents:
-			uri = mint_uuid_uri()
-			agent_rdf = make_prov_object(uri, agent, 'agent')
-			activity_rdf = (self.activity_uri, PROV['wasAssociatedWith'], uri)
-			self.graph.add(activity_rdf)
-			self.graph += agent_rdf
-
-	def graph_entities(self):
-		for entity in self.entities:
-			uri = mint_uuid_uri()
-			entity_rdf = make_prov_object(uri, entity, 'entity')
-			activity_rdf = (self.activity_uri, PROV['used'], uri)
-			self.graph.add(activity_rdf)
-			self.graph += entity_rdf
-
-	def graph_statements(self):
-		for s,p,o in self.add_triples.triples((None,None,None)):
-			stmt = mint_uuid_uri()
-			action = Literal('add')
-			stmt_rdf = make_statement_rdf(
-				stmt,self.activity_uri,action,s,p,o
-				)
-			self.graph += stmt_rdf
-		for s,p,o in self.remove_triples.triples((None,None,None)):
-			stmt = mint_uuid_uri()
-			action = Literal('remove')
-			stmt_rdf = make_statement_rdf(
-				stmt,self.activity_uri,action,s,p,o
-				)
-			self.graph += stmt_rdf
-
-	def log(self):
-		self.graph_activity()
-		self.graph_agents()
-		self.graph_entities()
-		self.graph_statements()
-		nt = self.graph.serialize(format='nt')
-		self.logger.warning(nt)
 
 class CRHLogger(ActivityLogger):
 	"""
