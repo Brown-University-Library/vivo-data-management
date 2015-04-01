@@ -15,13 +15,10 @@ BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
 logger = logging.getLogger('rdflog')
 logger.setLevel(11)
 # This must be an absolute path
-path = '/work/staging/test-logs/rdflog.nt'
-fh = handlers.TimedRotatingFileHandler(
-	path,
-	when='d',
-	interval=1,
-	backupCount=30
-	)
+today = datetime.date.today()
+fname = 'rdflog.{0}.nt'.format(today.isoformat())
+path = '/work/staging/test-logs/' + fname
+fh = logging.FileHandler(path)
 logger.addHandler(fh)
 logger.propagate = False
 
