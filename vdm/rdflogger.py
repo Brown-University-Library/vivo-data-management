@@ -43,8 +43,11 @@ def make_timestamp():
 	return tstamp
 
 def lookup_activity_class(activty):
-	activity_class = activity_map[activty]
-	return activity_class
+	try:
+		activity_class = activity_map[activty]
+		return activity_class
+	except KeyError:
+		raise KeyError('unrecognized Activity subclass')
 
 class RDFLogger(object):
 	def __init__(self, activity_class=None):
@@ -78,6 +81,12 @@ class RDFLogger(object):
 	def remove_rdf(self, graph):
 		self.remove_triples += graph
 
+	def stage(self, add=None, remove=None):
+		if add:
+			self.add_rdf(add)
+		if remove:
+			self.remove_rdf(remove)
+
 	def log(self):
 		self.graph_statements()
 		nt = self.graph.serialize(format='nt')
@@ -106,7 +115,7 @@ class RDFLogger(object):
 
 	#########################
 	###### Convenience ######
-    ####### Functions  ######
+    ####### Functions #######
     #########################
 
 	def add_source(self, source):
@@ -132,41 +141,3 @@ class RDFLogger(object):
 			)
 
 	#def add_user_agent(self, shortid):
-
-
-# class CRHLogger(ActivityLogger):
-# 	"""
-# 	CrossRefHarvestLogger
-# 	Logs RDF produced by harvesting metadata from CrossRef
-# 	"""
-# 	def __init__(self):
-# 		super(CRHLogger, self).__init__()
-# 		self.label = 'CrossRef DOI Harvest'
-# 		self.entities = ['http://search.crossref.org/']
-
-# class PMHLogger(ActivityLogger):
-# 	"""
-# 	PubMed HarvestLogger
-# 	Logs RDF produced by harvesting metadata from PubMed
-# 	"""
-# 	def __init__(self):
-# 		super(PMHLogger, self).__init__()
-# 		self.label = 'PubMed PMID Harvest'
-# 		self.entities = ['http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=%s&retmode=json']
-
-# class VMLogger(ActivityLogger):
-# 	"""
-# 	VIVOManagerLogger
-# 	Logs RDF produced by edits made via VIVO Manager
-# 	"""
-# 	def __init__(self):
-# 		super(VMLogger, self).__init__()
-# 		self.label = 'VIVO Manager Logger'
-
-# 	def add_faculty_agent(self, shortid):
-# 		self.agents.append(shortid)
-
-# class FISLogger(ActivityLogger):
-# 	def __init__(self):
-# 		super(FISLogger, self).__init__()
-# 		self.activity_subclass = BPROV['FISFacultyFeed']
