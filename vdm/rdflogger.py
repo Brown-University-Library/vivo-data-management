@@ -54,8 +54,8 @@ class RDFLogger(object):
 		self.logger = logger
 		self.graph = Graph()
 
-	def add_activity(self, activity):
-		self.graph += activity.graph
+	def add_rdf(self, rdf_object):
+		self.graph += rdf_object.graph
 
 	def log(self):
 		nt = self.graph.serialize(format='nt')

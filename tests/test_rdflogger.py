@@ -15,8 +15,37 @@ import vdm.rdflogger as rdflogger
 PROV = Namespace('http://www.w3.org/ns/prov#')
 BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
 
+def test_make_timestamp():
+	tstamp = rdflogger.make_timestamp()
+	now_dt = datetime.datetime.utcnow()
+	assert(
+		type(tstamp) is Literal
+	)
+	assert(
+		tstamp.datatype == XSD['dateTime']
+	)
+	dt = tstamp.toPython()
+	assert(
+		dt.year == now_dt.year
+	)
+	assert(
+		dt.day == now_dt.day
+	)
 
-def test_instantiate_Activity():
+def test_mint_uuid_uri():
+	uri = rdflogger.mint_uuid_uri()
+	assert(
+		type(uri) is URIRef
+	)
+	uri_val = uri.n3()
+	uri_regex = re.compile(
+		"<http://vivo.brown.edu/individual/n[a-z0-9]{32}>"
+		)
+	assert(
+		uri_regex.match(uri_val)
+	)
+
+def test_instantiate_activity():
 	act1 = rdflogger.ActivityRDF()
 	assert(
 		hasattr(act1, 'activity_uri')
@@ -149,32 +178,36 @@ def test_remove_rdf():
 			)) == 2
 	)
 
-def test_make_timestamp():
-	tstamp = rdflogger.make_timestamp()
-	now_dt = datetime.datetime.utcnow()
+def instantiate_rdflogger():
+	rdflog = rdflogger.RDFLogger()
 	assert(
-		type(tstamp) is Literal
+		hasattr(rdflog, 'logger')
 	)
 	assert(
-		tstamp.datatype == XSD['dateTime']
-	)
-	dt = tstamp.toPython()
-	assert(
-		dt.year == now_dt.year
-	)
-	assert(
-		dt.day == now_dt.day
+		hasattr(rdflog, 'graph')
 	)
 
-def test_mint_uuid_uri():
-	uri = rdflogger.mint_uuid_uri()
+def add_activity_to_rdflog():
+	rdflog = rdflogger.RDFLogger()
+	act1 = rdflogger.ActivityRDF()
+	act2 = rdflogger.ActivityRDF()
+	rdflog.add_rdf(act1)
+	rdflog.add_rdf(act2)
+	graph = rdflog.graph
 	assert(
-		type(uri) is URIRef
+		(None, RDF['type'], PROV['Activity']) in graph
 	)
-	uri_val = uri.n3()
-	uri_regex = re.compile(
-		"<http://vivo.brown.edu/individual/n[a-z0-9]{32}>"
-		)
 	assert(
-		uri_regex.match(uri_val)
+		(None, PROV['startedAtTime'], None) in graph
+	)
+	assert(
+		(None, PROV['endedAtTime'], None) in graph
+	)
+	assert(
+		(None, RDFS['label'], None) in graph
+	)
+	assert(
+		sum(1 for _ in graph.triples(
+			(None, RDF['type'], PROV['Activity'])
+			)) == 2
 	)
