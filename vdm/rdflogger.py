@@ -140,4 +140,16 @@ class RDFLogger(object):
 			(self.activity_uri, PROV['wasAssociatedWith'], uri)
 			)
 
+	def add_user_agent(self, agent_uri):
+		#expects a URI as agent_uri
+		if not isinstance(agent_uri, URIRef):
+			raise TypeError('Expecting User URI')
+		agent_res = Resource(self.graph, agent_uri)
+		agent_res.add(RDF['type'], PROV['Agent'])
+		agent_res.add(RDFS['label'], Literal(agent_uri))
+		self.graph.add(
+			(self.activity_uri, PROV['wasAssociatedWith'], agent_uri)
+			)
+
+
 	#def add_user_agent(self, shortid):
