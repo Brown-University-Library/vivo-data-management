@@ -17,7 +17,7 @@ logger.setLevel(11)
 # This must be an absolute path
 today = datetime.date.today()
 fname = 'rdflog.{0}.nt'.format(today.isoformat())
-path = '/work/staging/test-logs/' + fname
+path = '/tmp/' + fname
 fh = logging.FileHandler(path)
 logger.addHandler(fh)
 logger.propagate = False
