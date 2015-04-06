@@ -15,46 +15,143 @@ import vdm.rdflogger as rdflogger
 PROV = Namespace('http://www.w3.org/ns/prov#')
 BPROV = Namespace('http://vivo.brown.edu/ontology/provenance#')
 
-def test_make_activity_datetime():
-	activity_uri = rdflogger.mint_uuid_uri()
-	dt = rdflogger.make_timestamp()
-	prov_rdf = rdflogger.make_activity_datetime(activity_uri, dt)
+
+def test_instantiate_Activity():
+	act1 = rdflogger.ActivityRDF()
 	assert(
-		(activity_uri, PROV['startedAtTime'], dt) in prov_rdf
+		hasattr(act1, 'activity_uri')
 	)
 	assert(
-		(activity_uri, PROV['endedAtTime'], dt) in prov_rdf
+		hasattr(act1, 'graph')
+	)
+	uri = act1.activity_uri
+	graph = act1.graph
+	assert(
+		(uri, RDF['type'], PROV['Activity']) in graph
+	)
+	assert(
+		(uri, PROV['startedAtTime'], None) in graph
+	)
+	assert(
+		(uri, PROV['endedAtTime'], None) in graph
+	)
+	assert(
+		(uri, RDFS['label'], None) in graph
+	)
+	assert(
+		len(graph) == 4
 	)
 
-def test_make_prov_object():
-	label = 'test activity'
-	uri = rdflogger.mint_uuid_uri()
-	prov_ob =  rdflogger.make_prov_object(uri, label,'activity')
+def test_instantiate_typed_activity():
+	act1 = rdflogger.ActivityRDF('BannerFeed')
+	uri = act1.activity_uri
+	graph = act1.graph
 	assert(
-		(uri, RDF['type'], PROV['Activity']) in prov_ob
-	)
-	assert(
-		(uri, RDFS['label'], Literal(label)) in prov_ob
+		(uri, RDF['type'], BPROV['BannerFeed']) in graph
 	)
 
-def test_get_prov_class():
-	class_string = 'activity'
-	prov_class = rdflogger.get_prov_class(class_string)
-	assert(
-		prov_class == PROV['Activity']
-	)
-	class_string = 'eNTiTY'
-	prov_class = rdflogger.get_prov_class(class_string)
-	assert(
-		prov_class == PROV['Entity']
-	)
-	class_string = ' Agent'
+def test_bad_activity_type_fails():
 	with pytest.raises(KeyError):
-		prov_class = rdflogger.get_prov_class(class_string)
+		act1 = rdflogger.ActivityRDF('FakeFeed')
+
+def test_graph_statements():
+	act1 = rdflogger.ActivityRDF()
+	s = URIRef('http://example.com/fake')
+	p = RDFS['label']
+	o = Literal('fake')
+	action = BPROV['Add']
+	act1.graph_statements(action,s,p,o)
+	activity = act1.activity_uri
+	graph = act1.graph
+	assert(
+		(None, RDF['type'], RDF['Statement']) in graph
+	)
+	assert(
+		(None, RDF['subject'], s) in graph
+	)
+	assert(
+		(None, RDF['predicate'], p) in graph
+	)
+	assert(
+		(None, RDF['object'], o) in graph
+	)
+	assert(
+		(None, BPROV['action'], action) in graph
+	)
+	assert(
+		(None, BPROV['statmentGeneratedBy'], activity) in graph
+	)
+	assert(
+		(activity, BPROV['generatedStatement'], None) in graph
+	)
+
+def test_add_rdf():
+	add = Graph()
+	stmts = [
+		(URIRef('http://example.com/fake'),
+			RDFS['label'], Literal('fake')),
+		(URIRef('http://example.com/fake'),
+			RDF['type'], BPROV['FakeClass'])
+		]
+	for s in stmts:
+		add.add(s)
+	act1 = rdflogger.ActivityRDF()
+	act1.add_rdf(add)
+	graph = act1.graph
+	assert(
+		(None, BPROV['action'], BPROV['Add']) in graph
+	)
+	assert(
+		(None, RDF['subject'], URIRef('http://example.com/fake'))
+			in graph
+	)
+	assert(
+		(None, RDF['object'], Literal('fake')) in graph
+	)
+	assert(
+		(None, RDF['object'], BPROV['FakeClass']) in graph
+	)
+	# Counting the number of triples with the type 'Statement'
+	# (counting length of generator output)
+	# http://stackoverflow.com/questions/393053/length-of-generator-output
+	assert(
+		sum(1 for _ in graph.triples(
+			(None, RDF['type'], RDF['Statement'])
+			)) == 2
+	)
+
+def test_remove_rdf():
+	rmv = Graph()
+	stmts = [
+		(URIRef('http://example.com/fake'),
+			RDFS['label'], Literal('fake')),
+		(URIRef('http://example.com/fake'),
+			RDF['type'], BPROV['FakeClass'])
+		]
+	for s in stmts:
+		rmv.add(s)
+	act1 = rdflogger.ActivityRDF()
+	act1.remove_rdf(rmv)
+	graph = act1.graph
+	uri = act1.activity_uri
+	assert(
+		(None, BPROV['action'], BPROV['Remove']) in graph
+	)
+	assert(
+		(uri, BPROV['generatedStatement'], None) in graph
+	)
+	# Counting the number of triples with the type 'Statement'
+	# (counting length of generator output)
+	# http://stackoverflow.com/questions/393053/length-of-generator-output
+	assert(
+		sum(1 for _ in graph.triples(
+			(None, RDF['type'], RDF['Statement'])
+			)) == 2
+	)
 
 def test_make_timestamp():
 	tstamp = rdflogger.make_timestamp()
-	today_dt = datetime.datetime.today()
+	now_dt = datetime.datetime.utcnow()
 	assert(
 		type(tstamp) is Literal
 	)
@@ -63,45 +160,10 @@ def test_make_timestamp():
 	)
 	dt = tstamp.toPython()
 	assert(
-		dt.year == today_dt.year
+		dt.year == now_dt.year
 	)
 	assert(
-		dt.day == today_dt.day
-	)
-
-def test_make_statement_rdf():
-	#Eventually, need a function to decompose RDF and rdflib triples
-	#into s,p,o
-	s = URIRef('subject')
-	p = URIRef('predicate')
-	o = URIRef('object')
-	action = Literal('add')
-	stmt = rdflogger.mint_uuid_uri()
-	activity = rdflogger.mint_uuid_uri()
-	stmt_prov = rdflogger.make_statement_rdf(stmt,activity,action,s,p,o)
-	assert(
-		(stmt, RDF['type'], RDF['Statement']) in stmt_prov
-	)
-	assert(
-		(stmt, RDF['subject'], s) in stmt_prov
-	)
-	assert(
-		(stmt, RDF['predicate'], p) in stmt_prov
-	)
-	assert(
-		(stmt, RDF['object'], o) in stmt_prov
-	)
-	assert(
-		(stmt, BPROV['action'], action) in stmt_prov
-	)
-	assert(
-		(stmt, BPROV['statmentGeneratedBy'], activity) in stmt_prov
-	)
-	assert(
-		(activity, BPROV['generatedStatement'], stmt) in stmt_prov
-	)
-	assert(
-		len(stmt_prov) == 7
+		dt.day == now_dt.day
 	)
 
 def test_mint_uuid_uri():

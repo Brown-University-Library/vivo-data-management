@@ -50,15 +50,24 @@ def lookup_activity_class(activty):
 		raise KeyError('unrecognized Activity subclass')
 
 class RDFLogger(object):
-	def __init__(self, activity_class=None):
+	def __init__(self):
 		self.logger = logger
-		self.activity_uri = ''
-		self.add_triples = Graph()
-		self.remove_triples = Graph()
 		self.graph = Graph()
-		self.add_activity(activity_class)
 
-	def add_activity(self, activity_class=None):
+	def add_activity(self, activity):
+		self.graph += activity.graph
+
+	def log(self):
+		nt = self.graph.serialize(format='nt')
+		self.logger.warning(nt)
+
+class ActivityRDF(object):
+	def __init__(self, activity_class=None):
+		self.activity_uri = ''
+		self.graph = Graph()
+		self.graph_activity(activity_class)
+
+	def graph_activity(self, activity_class=None):
 		uri = mint_uuid_uri()
 		activity_res = Resource(self.graph, uri)
 		self.activity_uri = uri
@@ -76,10 +85,14 @@ class RDFLogger(object):
 		activity_res.add(RDFS['label'], Literal(activity_label))
 
 	def add_rdf(self, graph):
-		self.add_triples += graph
+		for s,p,o in graph.triples((None,None,None)):
+			action = BPROV['Add']
+			self.graph_statements(action,s,p,o)
 
 	def remove_rdf(self, graph):
-		self.remove_triples += graph
+		for s,p,o in graph.triples((None,None,None)):
+			action = BPROV['Remove']
+			self.graph_statements(action,s,p,o)
 
 	def stage(self, add=None, remove=None):
 		if add:
@@ -87,20 +100,7 @@ class RDFLogger(object):
 		if remove:
 			self.remove_rdf(remove)
 
-	def log(self):
-		self.graph_statements()
-		nt = self.graph.serialize(format='nt')
-		self.logger.warning(nt)
-
-	def graph_statements(self):
-		for s,p,o in self.add_triples.triples((None,None,None)):
-			action = BPROV['Add']
-			self.add_statement(action,s,p,o)
-		for s,p,o in self.remove_triples.triples((None,None,None)):
-			action = BPROV['Remove']
-			self.add_statement(action,s,p,o)
-
-	def add_statement(self,action,s,p,o):
+	def graph_statements(self,action,s,p,o):
 		uri = mint_uuid_uri()
 		stmt_res = Resource(self.graph, uri)
 		stmt_res.add(RDF['type'], RDF['Statement'])
@@ -150,6 +150,3 @@ class RDFLogger(object):
 		self.graph.add(
 			(self.activity_uri, PROV['wasAssociatedWith'], agent_uri)
 			)
-
-
-	#def add_user_agent(self, shortid):
