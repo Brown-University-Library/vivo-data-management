@@ -28,6 +28,7 @@ class TestArticle(BTest):
             u'The Journal of pediatrics',
             prepped['venue']['label']
         )
+        self.eq(prepped['venue']['a'], "bcite:Venue")
         self.eq(u'163', prepped['volume'])
 
         date = prepped['date']
@@ -48,14 +49,16 @@ class TestArticle(BTest):
 
         #check venue
         rq = """
-        select ?issn
+        select ?issn ?vtype
         where {
             ?p bcite:hasVenue ?venue .
-            ?venue bcite:issn ?issn .
+            ?venue bcite:issn ?issn ;
+                a ?vtype .
         }
         """
         for row in g.query(rq):
             self.eq(u'0022-3476', row.issn.toPython())
+            self.eq(row.vtype, BCITE.Venue)
 
         date = g.value(subject=pub_uri, predicate=BCITE.date)
         dtv = date.toPython()

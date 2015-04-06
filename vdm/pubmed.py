@@ -119,6 +119,7 @@ class Publication(object):
         venue['label'] = pull(meta, 'fulljournalname')
         venue['issn'] = pull(meta, 'issn')
         venue['eissn'] = pull(meta, 'essn')
+        venue['a'] = "bcite:Venue"
         if (venue['label'] is not None):
             bib['venue'] = venue
 
