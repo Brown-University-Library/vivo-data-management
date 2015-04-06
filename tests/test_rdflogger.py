@@ -7,8 +7,7 @@ import re
 from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
 
-# from vdm import namespaces
-# from vdm.namespaces import D, RDFS
+from vdm.namespaces import D
 
 import vdm.rdflogger as rdflogger
 
@@ -39,12 +38,11 @@ def test_mint_uuid_uri():
 	)
 	uri_val = uri.n3()
 	uri_regex = re.compile(
-		"<http://vivo.brown.edu/individual/n[a-z0-9]{32}>"
-		)
+		"<" + D + "n[a-z0-9]{32}>"
+	)
 	assert(
 		uri_regex.match(uri_val)
 	)
-
 def test_instantiate_activity():
 	act1 = rdflogger.ActivityRDF()
 	assert(
