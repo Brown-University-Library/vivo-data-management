@@ -2,6 +2,7 @@ import logging
 import traceback
 import uuid
 import datetime
+import re
 
 from rdflib import RDF, RDFS, URIRef, Namespace, XSD, Literal
 from rdflib import Graph
@@ -48,6 +49,20 @@ def lookup_activity_class(activty):
 		return activity_class
 	except KeyError:
 		raise KeyError('unrecognized Activity subclass')
+
+def log_to_file(
+		add=None,
+		remove=None,
+		activity=None,
+		user=None,
+		):
+	rdflog = RDFLogger()
+	activity = ActivityRDF(activity)
+	activity.stage(add,remove)
+	if user:
+		activity.add_user_agent(user)
+	rdflog.add_rdf(activity)
+	rdflog.log()
 
 class RDFLogger(object):
 	def __init__(self):
@@ -140,13 +155,18 @@ class ActivityRDF(object):
 			(self.activity_uri, PROV['wasAssociatedWith'], uri)
 			)
 
-	def add_user_agent(self, agent_uri):
+	def add_user_agent(self, agent_str):
 		#expects a URI as agent_uri
-		if not isinstance(agent_uri, URIRef):
-			raise TypeError('Expecting User URI')
-		agent_res = Resource(self.graph, agent_uri)
+		email_re = re.compile(r'(?P<short_id>^[\w\.-]*)@')
+		try:
+			match = email_re.match(agent_str)
+			short_id = match.group('short_id')
+		except:
+			raise TypeError('Expecting user email')
+		uri = URIRef(D[short_id])
+		agent_res = Resource(self.graph, uri)
 		agent_res.add(RDF['type'], PROV['Agent'])
-		agent_res.add(RDFS['label'], Literal(agent_uri))
+		agent_res.add(RDFS['label'], Literal(short_id))
 		self.graph.add(
-			(self.activity_uri, PROV['wasAssociatedWith'], agent_uri)
+			(self.activity_uri, PROV['wasAssociatedWith'], uri)
 			)
