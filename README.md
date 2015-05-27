@@ -28,4 +28,6 @@ This has been developed and tested with Python 2.7.
 
 ##Development
 ###Running tests
-The tests are written with [pytest](http://pytest.org/latest/) and exepect a default namespace.  Run with `$ DATA_NAMESPACE='http://vivo.school.edu/individual/' py.test`
+The tests are written with [pytest](http://pytest.org/latest/) and expect a default namespace.  Run with:
+
+`$ DATA_NAMESPACE='http://vivo.school.edu/individual/' py.test`
