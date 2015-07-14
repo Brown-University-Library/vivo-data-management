@@ -32,7 +32,10 @@ class BaseResource(rdflib.resource.Resource):
         """
         labels = self.get_literals(RDFS.label)
         if first_only is True:
-            return labels[0]
+            try:
+                return labels[0]
+            except IndexError:
+                return
         return labels
 
     def get_related(self, prop):
