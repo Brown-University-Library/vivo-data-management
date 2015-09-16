@@ -26,6 +26,7 @@ AFN = Namespace('http://jena.hpl.hp.com/ARQ/function#')
 BLOCAL = Namespace('http://vivo.brown.edu/ontology/vivo-brown/')
 BCITE = Namespace('http://vivo.brown.edu/ontology/citation#')
 BPROFILE = Namespace('http://vivo.brown.edu/ontology/profile#')
+BDISPLAY = Namespace('http://vivo.brown.edu/ontology/display#')
 
 #tmp graph for in memory graphs
 TMP = Namespace('http://localhost/tmp#')
