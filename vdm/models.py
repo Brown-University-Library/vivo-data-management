@@ -173,12 +173,15 @@ class FacultyMember(VResource):
                 tmp:email ?email ;
                 vivo:overview ?overview ;
                 blocal:hasAffiliation ?org ;
+                vivo:educationalTraining ?edu ;
                 vivo:hasResearchArea ?ra ;
                 tmp:image ?photo ;
                 tmp:fullImage ?miURL ;
                 blocal:hasGeographicResearchArea ?rag .
             #affils
             ?org rdfs:label ?orgName .
+            #education
+            ?edu rdfs:label ?degree .
             #research areas
             ?ra rdfs:label ?raName .
             #geo research area
@@ -208,6 +211,12 @@ class FacultyMember(VResource):
             UNION {
                 ?subject blocal:hasAffiliation ?org .
                 ?org rdfs:label ?orgName .
+            }
+            #optional - education
+            UNION {
+                ?subject vivo:educationalTraining ?edu .
+                ?edu a vivo:EducationalTraining ;
+                    rdfs:label ?degree .
             }
             #optional - research areas
             UNION {
@@ -259,3 +268,6 @@ class FacultyMember(VResource):
 
     def places(self):
         return self.get_related(BLOCAL.hasGeographicResearchArea)
+
+    def education(self):
+        return self.get_related(VIVO.educationalTraining)
