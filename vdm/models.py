@@ -177,7 +177,9 @@ class FacultyMember(VResource):
                 vivo:hasResearchArea ?ra ;
                 tmp:image ?photo ;
                 tmp:fullImage ?miURL ;
-                blocal:hasGeographicResearchArea ?rag .
+                blocal:hasGeographicResearchArea ?rag ;
+                tmp:facultyTitle ?facultyTitle ;
+                tmp:administrativeTitle ?adminTitle .
             #affils
             ?org rdfs:label ?orgName .
             #education
@@ -241,6 +243,18 @@ class FacultyMember(VResource):
                 ?ti vitropublic:downloadLocation ?dl .
                 ?dl vitropublic:directDownloadUrl ?photo .
             }
+            #optional - faculty titles
+            UNION {
+                ?subject vivo:personInPosition ?pos .
+                ?pos a vivo:FacultyPosition;
+                    rdfs:label ?facultyTitle.
+            }
+            #optional - administrative titles
+            UNION {
+                ?subject vivo:personInPosition ?pos .
+                ?pos a vivo:FacultyAdministrativePosition;
+                    rdfs:label ?adminTitle.
+            }
         }
         """
         return rq
@@ -259,6 +273,12 @@ class FacultyMember(VResource):
 
     def title(self):
         return self.get_first_literal(VIVO.preferredTitle)
+
+    def faculty_titles(self):
+        return self.get_literals(TMP.facultyTitle)
+
+    def administrative_titles(self):
+        return self.get_literals(TMP.administrativeTitle)
 
     def membership(self):
         return self.get_related(BLOCAL.hasAffiliation)
