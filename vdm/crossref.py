@@ -13,7 +13,7 @@ from rdflib_jsonld.parser import to_rdf
 
 import context
 
-from utils import pull, get_user_agent
+from utils import pull, get_user_agent, scrub_doi
 
 doi_prefix = 'http://dx.doi.org/'
 
@@ -62,15 +62,27 @@ class CrossRefSearchException(Exception):
 def metadata_search(search_string):
     """
     Search the metadata API.
+
+    Updated 7/3/2019
+    CrossRef search API no longer functioning.
+    Repurposing DOI resolution as DOI search.
     """
-    base = "http://search.crossref.org/dois?q={0}".format(search_string)
-    ua = get_user_agent()
-    resp = requests.get(base, headers=ua)
-    data = resp.json()
-    if len(data) == 0:
-        raise CrossRefSearchException("No CR metadata search results")
-    else:
-        return data
+    try:
+        pub = Publication()
+        prepped = pub.to_json(scrub_doi(search_string))
+        full_citation = u''
+        if isinstance(prepped['title'], list):
+            full_citation += u'<em>{}</em>'.format(prepped['title'][0])
+        elif isinstance(prepped['title'], unicode) or isinstance(prepped['title'], str):
+            full_citation += u'<em>{}</em>'.format(prepped['title'])
+        else:
+            CrossRefSearchException("Citation has no title. Exiting")
+        if prepped['date']:
+            full_citation += u'. {}'.format(prepped['date'].year)
+        return [ {'doi': prepped['doi'], 'fullCitation': full_citation }]
+    except Exception, e:
+        logging.error(e)
+        raise CrossRefSearchException("Failure to parse CR results")
 
 
 class Publication(object):
