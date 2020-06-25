@@ -192,14 +192,13 @@ def test_fetch():
     title = cr_rdf.value(subject=URIRef(uri), predicate=DCTERMS.title)
     assert(title.toPython().startswith(u'Preterm Infant Linear Growth and Adiposity Gain'))
 
-@vcr.use_cassette('tests/data/vcr/crossref/metadata_search.yaml')
 def test_metadata_search():
     from vdm.crossref import metadata_search
     meta = metadata_search('10.1001/jama.2011.563')
     citation = meta[0]['fullCitation']
     assert(citation.find(u'Hospitalist Efforts and Improving Discharge') > -1)
     doi = meta[0]['doi']
-    assert(doi == u'http://dx.doi.org/10.1001/jama.2011.563')
+    assert(doi == u'10.1001/jama.2011.563')
 
 @vcr.use_cassette('tests/data/vcr/crossref/openurl.yaml')
 def test_by_openurl():
