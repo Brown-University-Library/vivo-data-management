@@ -39,7 +39,7 @@ setup(
     cmdclass = {'test': PyTest},
     install_requires=[
         'requests==2.7.0',
-        'bleach==1.4.2',
+        'bleach==3.1.4',
         'html5lib==0.9999999',
         'nameparser==0.3.9',
         'python-dateutil==2.4.2',
