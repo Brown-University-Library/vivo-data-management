@@ -1,12 +1,13 @@
-bleach
-requests
-git+https://github.com/RDFLib/rdflib-jsonld.git
-#For date parsing
-python-dateutil
-#Names
-nameparser
-SPARQLWrapper==1.8.5
-#Only for development
-pytest
+bleach==1.4.2
+html5lib==0.9999999
+requests==2.7.0
+rdflib==4.2.1
+git+https://github.com/RDFLib/rdflib-jsonld.git@f924ae451431bd722d0d0e11f0637b7923e48565
+python-dateutil==2.4.2
+nameparser==0.3.9
+pyYAML==3.11
+pytest==2.6.4
+py==1.4.26
+SPARQLWrapper==1.6.4
 git+https://github.com/kevin1024/vcrpy.git@v1.1.4#egg=vcrpy
 
