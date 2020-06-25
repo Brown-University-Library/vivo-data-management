@@ -1,10 +1,11 @@
-from pprint import pprint
 import json
+from pprint import pprint
 
 import pytest
+import responses
 from rdflib import URIRef, RDFS
 
-from .tutils import load, BTest
+from .tutils import load, BTest, CROSSREF_OPENURL_RESPONSE
 
 from vdm.utils import get_env
 
@@ -12,8 +13,6 @@ from vdm.crossref import Publication
 from vdm.namespaces import ns_mgr, BCITE, D, DCTERMS
 
 import datetime
-
-import vcr
 
 try:
     get_env('TRAVIS')
@@ -200,8 +199,13 @@ def test_metadata_search():
     doi = meta[0]['doi']
     assert(doi == u'10.1001/jama.2011.563')
 
-@vcr.use_cassette('tests/data/vcr/crossref/openurl.yaml')
+@responses.activate
 def test_by_openurl():
+    responses.add(responses.GET, 'http://crossref.org/openurl/',
+                  body=CROSSREF_OPENURL_RESPONSE,
+                  status=200,
+                  content_type='text/xml'
+                )
     from vdm.crossref import by_openurl
     p = {
         'issn': '1431-0651',
@@ -209,7 +213,6 @@ def test_by_openurl():
         'volume': '19',
         'date': '2015'
     }
-    #with vcr.use_cassette('test/data/vcr/crossref_openurl.yaml', filter_query_parameters=['pid']):
     title, doi = by_openurl(p, 'noreply@example.org')
     assert doi == '10.1007/s00792-014-0663-8'
     assert title.startswith('Transposon mutagenesis')
