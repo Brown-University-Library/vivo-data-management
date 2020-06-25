@@ -38,7 +38,7 @@ setup(
     description = 'Tools for working with data for VIVO.',
     cmdclass = {'test': PyTest},
     install_requires=[
-        'requests==2.7.0',
+        'requests==2.20.0',
         'bleach==1.4.2',
         'html5lib==0.9999999',
         'nameparser==0.3.9',
