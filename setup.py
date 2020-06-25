@@ -32,20 +32,22 @@ setup(
     name = 'vivo-data-management',
     version = '0.0.3',
     url = 'http://github.com/Brown-University-Library/vivo-data-management',
-    author = 'Ted Lawless',
-    author_email = 'tlawless@brown.edu',
+    author = 'Brown University Library',
+    author_email = 'bdr@brown.edu',
     packages = ['vdm',],
     description = 'Tools for working with data for VIVO.',
     cmdclass = {'test': PyTest},
     install_requires=[
-        'requests',
-        'bleach',
-        'python-dateutil',
-        'rdflib>=4.1',
-        'rdflib-jsonld>=0.2-dev'
+        'requests==2.7.0',
+        'bleach==1.4.2',
+        'html5lib==0.9999999',
+        'nameparser==0.3.9',
+        'python-dateutil==2.4.2',
+        'rdflib==4.2.2',
+        'rdflib-jsonld<0.5.0',
+        'SPARQLWrapper==1.8.5',
     ],
-    dependency_links = [
-        'https://github.com/RDFLib/rdflib-jsonld/zipball/master#egg=rdflib-jsonld-0.2-dev'
-    ],
-    tests_require=['pytest']
+    extras_require={
+        'test': ['pytest==2.6.4', 'responses==0.10.6']
+    }
 )
