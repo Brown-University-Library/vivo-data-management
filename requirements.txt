@@ -5,6 +5,7 @@ git+https://github.com/RDFLib/rdflib-jsonld.git
 python-dateutil
 #Names
 nameparser
+SPARQLWrapper==1.8.5
 #Only for development
 pytest
 git+https://github.com/kevin1024/vcrpy.git@v1.1.4#egg=vcrpy
