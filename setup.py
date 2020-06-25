@@ -42,7 +42,8 @@ setup(
         'bleach',
         'python-dateutil',
         'rdflib>=4.1',
-        'rdflib-jsonld>=0.2-dev'
+        'rdflib-jsonld>=0.2-dev',
+        'SPARQLWrapper==1.8.5',
     ],
     dependency_links = [
         'https://github.com/RDFLib/rdflib-jsonld/zipball/master#egg=rdflib-jsonld-0.2-dev'
