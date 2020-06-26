@@ -28,7 +28,7 @@ def scrub_doi(val):
     v = v.lower()
     v = v.replace('http://dx.doi.org/', '')
     v = v.replace('dx.doi.org/', '')
-    #leading DOI prefiex
+    #leading DOI prefix
     v = v.replace('doi:', '')
     v = v.replace(' ', '')
     return v.strip()

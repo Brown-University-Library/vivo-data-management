@@ -66,15 +66,9 @@ def test_remove_html():
     from vdm.utils import remove_html
 
     t = "<h1>hello</h1>"
-    assert(
-        remove_html(t),
-        'hello'
-    )
+    assert(remove_html(t) == 'hello')
     t = "<div><h1>hello</h1><span class=\"blah\">world</span></div>"
-    assert(
-        remove_html(t),
-        'hello world'
-    )
+    assert(remove_html(t) == 'helloworld')
 
 def test_user_agent():
     """
