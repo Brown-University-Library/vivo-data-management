@@ -28,13 +28,13 @@ def scrub_doi(val):
     v = v.lower()
     v = v.replace('http://dx.doi.org/', '')
     v = v.replace('dx.doi.org/', '')
-    #leading DOI prefiex
+    #leading DOI prefix
     v = v.replace('doi:', '')
     v = v.replace(' ', '')
     return v.strip()
 
 def pull(meta, k):
-    f = lambda x: None if unicode(x) is u'' else x
+    f = lambda x: None if str(x) == '' else x
     return f(meta.get(k))
 
 

@@ -1,10 +1,10 @@
 """
 JSON-LD contexts.
 """
-from namespaces import ns_mgr, D
+from .namespaces import ns_mgr, D
 
 base = {
-    "@base": D,
+    "@base": str(D),
     "a": "@type",
     "uri": "@id",
     "label": "rdfs:label",

@@ -14,8 +14,6 @@ def normalize(text):
     spaces, removing symbols, diacritical marks (umlauts) and
     converting all newlines etc. to single spaces.
     """
-    if not isinstance(text, unicode):
-        text = unicode(text)
     text = text.lower()
     decomposed = ucnorm('NFKD', text)
     filtered = []
@@ -34,7 +32,7 @@ def normalize(text):
             continue
         else:
             filtered.append(char)
-    text = u''.join(filtered)
+    text = ''.join(filtered)
     while '  ' in text:
         text = text.replace('  ', ' ')
     #remove hyphens
@@ -50,18 +48,18 @@ def url_slug(text):
 
 def tokenize(text, splits='COPZ'):
     token = []
-    for c in unicode(text):
+    for c in text:
         if category(c)[0] in splits:
             if len(token):
-                yield u''.join(token)
+                yield ''.join(token)
             token = []
         else:
             token.append(c)
     if len(token):
-        yield u''.join(token)
+        yield ''.join(token)
 
 
-PARENS = re.compile('\([^)]*\)')
+PARENS = re.compile(r'\([^)]*\)')
 def clean_parens(raw, normalized=True):
     """
     Normalizes and remove texts in parenthesis from string.

@@ -9,11 +9,11 @@ import requests
 import logging
 logger = logging.getLogger(__name__)
 
-from utils import get_user_agent, scrub_pmid
+from .utils import get_user_agent, scrub_pmid
 
 SERVICE_URL = 'http://profiles.catalyst.harvard.edu/services/GetPMIDs/default.asp'
 
-class DisambiguationEngine(object):
+class DisambiguationEngine:
     """
     Make and post documents to the disambiguation engine.
     http://profiles.catalyst.harvard.edu/docs/ProfilesRNS_DisambiguationEngine.pdf
@@ -125,4 +125,4 @@ class DisambiguationEngine(object):
         for pub in exclude_pubs:
             padd = ET.SubElement(pmid_exclude, "PMID")
             padd.text = pub
-        return ET.tostring(root)
+        return ET.tostring(root).decode('utf8')

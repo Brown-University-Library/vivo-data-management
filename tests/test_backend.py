@@ -22,7 +22,6 @@ def test_base():
     uuid_uri = base.uuid_uri()
     assert(isinstance(uuid_uri, URIRef))
     assert(type(uuid_uri) != str)
-    assert(type((uuid_uri) != unicode))
     assert(base.local_name(uuid_uri).startswith('n'))
     uuid2 = base.uuid_uri(prefix='q')
     ln = base.local_name(uuid2)

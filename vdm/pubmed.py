@@ -9,10 +9,8 @@ from rdflib_jsonld.parser import to_rdf
 
 import requests
 
-#from context import base, publication, publication_venue
-import context
-
-from utils import pull, get_user_agent
+from . import context
+from .utils import pull, get_user_agent
 
 
 def get_pubmed(pmid):

@@ -1,7 +1,7 @@
 language: python
 env: DATA_NAMESPACE="http://vivo.school.edu/individual/"
 python:
-  - 2.7
+  - 3.6
 install:
   - pip install .[test]
   - pip install coveralls
