@@ -49,7 +49,7 @@ setup(
     ],
     extras_require={
         'test': ['pytest==5.4.3', 'responses==0.10.6']
-    }
+    },
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
