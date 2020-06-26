@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 import pytest
 import responses
@@ -19,6 +18,7 @@ try:
     TRAVIS = True
 except Exception:
     TRAVIS = False
+
 
 class TestArticle(BTest):
 
@@ -78,11 +78,11 @@ class TestArticle(BTest):
         #as RDFLib URI objects.
         ca1 = [
             'jsmith',
-            'jjones'
+            'jjones',
         ]
         ca2 = [
             D['jsmith'],
-            D['jjones']
+            D['jjones'],
         ]
         for coauthors in [ca1, ca2]:
             pub = Publication()
@@ -93,8 +93,9 @@ class TestArticle(BTest):
             g = pub.to_graph(prepped)
             #Test that all coathors are in the outputted RDF..
             for ob in g.objects(subject=D['n123'], predicate=BCITE.hasContributor):
-                ca2.index(ob) > -1
                 assert(type(ob) == URIRef)
+                assert(ob in ca2)
+
 
 class TestBook(BTest):
 

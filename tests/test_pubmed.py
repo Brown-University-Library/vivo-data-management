@@ -126,14 +126,14 @@ class TestArticleUnicode(BTest):
         article = Publication()
         prepped = article.prep(self.meta)
         self.eq(
-            u'Survival trends in Waldenström macroglobulinemia: an analysis of the Surveillance, Epidemiology and End Results database.',
+            'Survival trends in Waldenström macroglobulinemia: an analysis of the Surveillance, Epidemiology and End Results database.',
             prepped['title']
         )
         self.eq(
-            u'Blood',
+            'Blood',
             prepped['venue']['label']
         )
-        self.eq(u'123', prepped['volume'])
+        self.eq('123', prepped['volume'])
 
         dtv = prepped['date']
         self.eq(2014, dtv.year)

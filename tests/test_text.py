@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 from vdm.text import normalize, tokenize, url_slug, clean_parens
 
 
 def test_normalize():
-    #Mixed case and str to unicode
-    assert normalize('BroWn') == normalize(u'Brown')
+    #Mixed case
+    assert normalize('BroWn') == normalize('Brown')
     #Trailing spaces
     assert normalize('  Brown  ') == normalize('Brown')
     #removed accents
-    assert normalize(u'Èasy') == normalize('Easy')
+    assert normalize('Èasy') == normalize('Easy')
     #new lines
     assert normalize('Brown\nUniv') == normalize('brown univ')
 

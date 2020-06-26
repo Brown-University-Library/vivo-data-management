@@ -1,4 +1,3 @@
-
 import logging
 logger = logging.getLogger(__name__)
 
@@ -15,16 +14,16 @@ from SPARQLWrapper import SPARQLWrapper
 
 import uuid
 
-from utils import get_env
+from .utils import get_env
 
-from vdm.namespaces import (
+from .namespaces import (
     namespaces,  #dict of namespaces
     ns_mgr,
     D,  #data namespace
 )
 
 
-class BaseBackend(object):
+class BaseBackend:
     """
     Common methods for all backends.
     """
@@ -70,9 +69,9 @@ class BaseBackend(object):
         subj = URIRef(triple['subject'])
         is_uri = False
         try:
-            is_uri = unicode(obj).startswith('http')
-        except Exception, e:
-            logger.warning(u"Encoding error editing object.")
+            is_uri = str(obj).startswith('http')
+        except Exception as e:
+            logger.warning("Encoding error editing object.")
             logger.warning(e)
         if is_uri is True:
             obj = URIRef(obj)
@@ -137,7 +136,7 @@ class VIVOBackend(BaseBackend):
 
     def build_clause(self, change_graph, name=None, delete=False):
         nameg = name or self.default_graph
-        stmts = u''
+        stmts = ''
         for subject, predicate, obj in change_graph:
             triple = "%s %s %s .\n" % (subject.n3(), predicate.n3(), obj.n3())
             stmts += triple
@@ -152,7 +151,7 @@ class VIVOBackend(BaseBackend):
         #http://www.w3.org/TR/sparql11-update/#deleteInsert
         #return self.primitive_edit(add_g, subtract_g)
         """
-        rq = u''
+        rq = ''
         add_size = len(add_g)
         remove_size = len(subtract_g)
         if (add_size == 0) and (remove_size == 0):
@@ -160,7 +159,7 @@ class VIVOBackend(BaseBackend):
         if add_size != 0:
             rq += self.build_clause(add_g, name=name)
         if remove_size != 0:
-            rq += u' ' + self.build_clause(subtract_g, name=name, delete=True)
+            rq += ' ' + self.build_clause(subtract_g, name=name, delete=True)
         logger.debug("SPARQL Update Query:\n".format(rq))
         self.do_update(rq)
         return True

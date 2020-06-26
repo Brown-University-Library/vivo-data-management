@@ -34,7 +34,7 @@ def scrub_doi(val):
     return v.strip()
 
 def pull(meta, k):
-    f = lambda x: None if unicode(x) is u'' else x
+    f = lambda x: None if str(x) == '' else x
     return f(meta.get(k))
 
 

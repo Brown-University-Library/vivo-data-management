@@ -1,4 +1,4 @@
-from utils import get_env
+from .utils import get_env
 
 
 #Namespaces
@@ -32,7 +32,8 @@ BDISPLAY = Namespace('http://vivo.brown.edu/ontology/display#')
 TMP = Namespace('http://localhost/tmp#')
 
 namespaces = {}
-for k, o in vars().items():
+vars_copy = vars().copy()
+for k, o in vars_copy.items():
     if isinstance(o, (Namespace, ClosedNamespace)):
         namespaces[k] = o
 

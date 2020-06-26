@@ -11,9 +11,9 @@ from rdflib import Graph
 
 from rdflib_jsonld.parser import to_rdf
 
-import context
+from . import context
 
-from utils import pull, get_user_agent, scrub_doi
+from .utils import pull, get_user_agent, scrub_doi
 
 doi_prefix = 'http://dx.doi.org/'
 
@@ -27,10 +27,10 @@ def get_crossref_rdf(doi):
     ua = get_user_agent()
     h.update(ua)
     handle = requests.get(doi, headers=h)
-    print handle.request.headers
+    print(handle.request.headers)
     try:
         graph = Graph().parse(data=handle.text)
-    except Exception, e:
+    except Exception as e:
         logger.info("Bad DOI:" + doi + "\n" + e)
         return
     return graph
@@ -49,7 +49,7 @@ def get_citeproc(doi):
     handle = requests.get(doi, headers=h)
     try:
         return handle.json()
-    except Exception, e:
+    except Exception as e:
         logger.error("Bad DOI {0}".format(doi))
         logger.error(e)
         return
@@ -70,22 +70,23 @@ def metadata_search(search_string):
     try:
         pub = Publication()
         prepped = pub.to_json(scrub_doi(search_string))
-        full_citation = u''
+        full_citation = ''
         if isinstance(prepped['title'], list):
-            full_citation += u'<em>{}</em>'.format(prepped['title'][0])
-        elif isinstance(prepped['title'], unicode) or isinstance(prepped['title'], str):
-            full_citation += u'<em>{}</em>'.format(prepped['title'])
+            full_citation += '<em>{}</em>'.format(prepped['title'][0])
+        elif isinstance(prepped['title'], str):
+            full_citation += '<em>{}</em>'.format(prepped['title'])
         else:
-            CrossRefSearchException("Citation has no title. Exiting")
+            raise CrossRefSearchException("Citation has no title. Exiting")
         if prepped['date']:
-            full_citation += u'. {}'.format(prepped['date'].year)
+            full_citation += '. {}'.format(prepped['date'].year)
         return [ {'doi': prepped['doi'], 'fullCitation': full_citation }]
-    except Exception, e:
+    except Exception as e:
         logging.error(e)
         raise CrossRefSearchException("Failure to parse CR results")
 
 
-class Publication(object):
+class Publication:
+
     def __init__(self):
         pass
 
@@ -125,12 +126,12 @@ class Publication(object):
     def pub_types(self, meta):
         d = {}
         ptype = pull(meta, 'type')
-        if ptype == u'journal-article':
+        if ptype == 'journal-article':
             d['a'] = 'bcite:Article'
-        elif (ptype == u'Book') or (ptype == u'Monograph'):
+        elif (ptype == 'Book') or (ptype == 'Monograph'):
             d['a'] = 'bcite:Book'
         #add to bcite ontology
-        elif ptype == u'proceedings-article':
+        elif ptype == 'proceedings-article':
             d['a'] = 'bcite:ConferencePaper'
         else:
             d['a'] = 'bcite:Citation'
@@ -168,7 +169,7 @@ class Publication(object):
         date = self._pub_date(meta)
         try:
             bib['date'] = date
-        except Exception, e:
+        except Exception as e:
             logging.warn("Can't create date for {0}.".format(doi))
             logging.warn(e)
 
