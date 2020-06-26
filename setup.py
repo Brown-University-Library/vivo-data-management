@@ -38,14 +38,13 @@ setup(
     description = 'Tools for working with data for VIVO.',
     cmdclass = {'test': PyTest},
     install_requires=[
-        'requests==2.7.0',
-        'bleach==1.4.2',
-        'html5lib==0.9999999',
-        'nameparser==0.3.9',
-        'python-dateutil==2.4.2',
+        'requests',
+        'bleach',
+        'nameparser',
+        'python-dateutil',
         'rdflib==4.2.2',
-        'rdflib-jsonld<0.5.0',
-        'SPARQLWrapper==1.8.5',
+        'rdflib-jsonld @ git+https://github.com/RDFLib/rdflib-jsonld.git@ae8e707b00771b8e43498461ebbc607c27edd388',
+        'SPARQLWrapper',
     ],
     extras_require={
         'test': ['pytest==5.4.3', 'responses==0.10.6']
