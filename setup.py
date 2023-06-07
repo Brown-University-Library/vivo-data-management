@@ -42,8 +42,8 @@ setup(
         'bleach>=3.3.0',
         'nameparser',
         'python-dateutil',
-        'rdflib==5.0.0',
-        'rdflib-jsonld==0.6.0',
+        'rdflib',
+        'rdflib-jsonld',
         'SPARQLWrapper',
     ],
     extras_require={
