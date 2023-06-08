@@ -63,4 +63,5 @@ docs/_build/
 .idea/vdm.iml
 .idea/workspace.xml
 
-
+# vscode stuff
+*vscode
