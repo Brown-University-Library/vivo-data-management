@@ -1,5 +1,5 @@
 import logging
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 from datetime import date
 import json
@@ -20,24 +20,41 @@ from . import context
 
 from .utils import pull, get_user_agent, scrub_doi
 
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+    datefmt='%d/%b/%Y %H:%M:%S' )
+logger = logging.getLogger( '__name__' )
+
+
 doi_prefix = 'http://dx.doi.org/'
 
 
 def get_crossref_rdf(doi):
+    logger.warning( 'starting get_crossref_rdf()' )
+    logger.warning( f'doi, ``{doi}``')
+    logger.info( 'starting get_crossref_rdf() INFO' )
     if doi.startswith(doi_prefix):
         pass
     else:
         doi = doi_prefix + doi
+    logger.warning( f'doi is now, ``{doi}``')
     h = {'Accept': 'application/rdf+xml'}
     ua = get_user_agent()
     h.update(ua)
+    logger.warning( f'full-headers are now, ``{h}``' )
     handle = requests.get(doi, headers=h)
-    print(handle.request.headers)
+    logger.warning( f'handle, ``{handle}``' )
+    # print(handle.request.headers)
     try:
-        graph = Graph().parse(data=handle.text)
+        graph = Graph().parse(data=handle.text, format='xml')
+        logger.warning( f'graph after Graph().parse..., ``{graph}``' )
     except Exception as e:
-        logger.info("Bad DOI:" + doi + "\n" + e)
+        logger.warning( "Bad DOI:" + doi + "\n" + repr(e) )
+        logger.exception( 'failure getting graph' )
         return
+    logger.warning( f'final graph returned, ```{graph}```' )
     return graph
 
 def get_citeproc(doi):
