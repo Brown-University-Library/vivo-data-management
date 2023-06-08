@@ -8,7 +8,7 @@ bleach==3.3.1
     # via -r ./vdm/config/requirments.in
 certifi==2023.5.7
     # via requests
-charset-normalizer==3.1.0
+charset-normalizer==2.0.12
     # via requests
 exceptiongroup==1.1.1
     # via pytest
@@ -51,7 +51,7 @@ sparqlwrapper==1.8.5
     # via -r ./vdm/config/requirments.in
 tomli==2.0.1
     # via pytest
-urllib3==2.0.3
+urllib3==1.26.16
     # via requests
 webencodings==0.5.1
     # via bleach

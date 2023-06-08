@@ -1,4 +1,9 @@
-requests
+requests==2.31.0
+## original version...
+# requests
+## version in production 2023-06-08
+#requests==2.26.0
+
 bleach~=3.3.0
 nameparser
 python-dateutil
