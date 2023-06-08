@@ -20,6 +20,10 @@ from . import context
 
 from .utils import pull, get_user_agent, scrub_doi
 
+## setup logging ----------------------------------------------------
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -31,30 +35,30 @@ logger = logging.getLogger( '__name__' )
 doi_prefix = 'http://dx.doi.org/'
 
 
-def get_crossref_rdf(doi):
-    logger.warning( 'starting get_crossref_rdf()' )
-    logger.warning( f'doi, ``{doi}``')
-    logger.info( 'starting get_crossref_rdf() INFO' )
+def get_crossref_rdf( doi ):
+    logger.info( 'starting get_crossref_rdf()' )
+    logger.debug( f'doi, ``{doi}``')
+    assert type(doi) == str
     if doi.startswith(doi_prefix):
         pass
     else:
         doi = doi_prefix + doi
-    logger.warning( f'doi is now, ``{doi}``')
+    logger.debug( f'doi is now, ``{doi}``')
     h = {'Accept': 'application/rdf+xml'}
     ua = get_user_agent()
     h.update(ua)
-    logger.warning( f'full-headers are now, ``{h}``' )
+    logger.debug( f'full-headers are now, ``{h}``' )
     handle = requests.get(doi, headers=h)
-    logger.warning( f'handle, ``{handle}``' )
+    logger.debug( f'handle, ``{handle}``' )
     # print(handle.request.headers)
     try:
         graph = Graph().parse(data=handle.text, format='xml')
-        logger.warning( f'graph after Graph().parse..., ``{graph}``' )
+        logger.debug( f'graph after Graph().parse..., ``{graph}``' )
     except Exception as e:
-        logger.warning( "Bad DOI:" + doi + "\n" + repr(e) )
+        logger.debug( "Bad DOI:" + doi + "\n" + repr(e) )
         logger.exception( 'failure getting graph' )
         return
-    logger.warning( f'final graph returned, ```{graph}```' )
+    logger.debug( f'final graph returned, ```{graph}```' )
     return graph
 
 def get_citeproc(doi):
@@ -246,7 +250,7 @@ def by_openurl(ourl_params, email):
     }
     #Add incoming parameters
     payload.update(ourl_params)
-    logger.debug("CrossRef url {} with params {}".format(cr_url, json.dumps(payload)))
+    logger.debug("CrossRef url ``{}`` with params ``{}``".format(cr_url, json.dumps(payload)))
     resp = requests.get(cr_url, params=payload)
     try:
         root = ET.fromstring(resp.text.encode('utf-8', 'ignore'))
