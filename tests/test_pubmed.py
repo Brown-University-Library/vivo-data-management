@@ -40,6 +40,8 @@ class TestArticle(BTest):
         article = Publication()
         meta = article.prep(self.meta, pub_uri=pub_uri)
         g = article.to_graph(meta)
+        # print( f'type(g), ``{type(g)}``' )
+
         g.namespace_manager = ns_mgr
         #ids
         pmid = g.value(subject=pub_uri, predicate=BCITE.pmid)
@@ -56,8 +58,17 @@ class TestArticle(BTest):
                 a ?vtype .
         }
         """
+        print( 'about to try print' )
+        try:
+            print( g.query(rq) )
+        except Exception as e:
+            print( 'Exception: ' + str(e) )
+
+        print( 'about to start "for row in g.query(rq):"' )
         for row in g.query(rq):
+            # print( 'first self.eq')
             self.eq(u'0022-3476', row.issn.toPython())
+            # print( 'second self.eq')
             self.eq(row.vtype, BCITE.Venue)
 
         date = g.value(subject=pub_uri, predicate=BCITE.date)
