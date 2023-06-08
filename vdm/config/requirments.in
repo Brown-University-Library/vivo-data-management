@@ -1,0 +1,17 @@
+requests
+bleach~=3.3.0
+nameparser
+python-dateutil
+
+#rdflib==4.2.2
+#rdflib==5.0.0
+rdflib~=6.0.0
+
+## bundled into rdflib 6.0.0 
+#rdflib-jsonld @ git+https://github.com/RDFLib/rdflib-jsonld.git@ae8e707b00771b8e43498461ebbc607c27edd388
+#rdflib-jsonld==0.6.0
+
+#SPARQLWrapper
+SPARQLWrapper==1.8.5
+responses==0.10.6
+pytest==7.3.1
