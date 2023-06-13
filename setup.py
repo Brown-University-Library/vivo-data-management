@@ -30,7 +30,7 @@ class PyTest(TestCommand):
 
 setup(
     name = 'vivo-data-management',
-    version = '0.0.3',
+    version = '0.0.4',
     url = 'http://github.com/Brown-University-Library/vivo-data-management',
     author = 'Brown University Library',
     author_email = 'bdr@brown.edu',
@@ -38,16 +38,15 @@ setup(
     description = 'Tools for working with data for VIVO.',
     cmdclass = {'test': PyTest},
     install_requires=[
-        'requests',
+        'requests==2.31.0',
         'bleach>=3.3.0',
         'nameparser',
         'python-dateutil',
-        'rdflib==4.2.2',
-        'rdflib-jsonld @ git+https://github.com/RDFLib/rdflib-jsonld.git@ae8e707b00771b8e43498461ebbc607c27edd388',
-        'SPARQLWrapper',
+        'rdflib~=6.0.0',
+        'SPARQLWrapper==1.8.5',
     ],
     extras_require={
-        'test': ['pytest==5.4.3', 'responses==0.10.6']
+        'test': ['pytest==7.3.1', 'responses==0.10.6']
     },
     classifiers=[
         'Programming Language :: Python',
