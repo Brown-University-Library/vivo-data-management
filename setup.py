@@ -39,7 +39,7 @@ setup(
     cmdclass = {'test': PyTest},
     install_requires=[
         'requests==2.31.0',
-        'bleach>=3.3.0',
+        'bleach==3.3.0',
         'nameparser',
         'python-dateutil',
         'rdflib~=6.0.0',
