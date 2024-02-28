@@ -5,7 +5,9 @@ from dateutil.parser import parse
 
 from rdflib import Graph
 
-from rdflib_jsonld.parser import to_rdf
+# from rdflib_jsonld.parser import to_rdf
+from rdflib.plugins.parsers.jsonld import to_rdf
+
 
 import requests
 

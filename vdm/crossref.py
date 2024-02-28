@@ -1,5 +1,5 @@
 import logging
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 from datetime import date
 import json
@@ -9,30 +9,56 @@ import requests
 
 from rdflib import Graph
 
-from rdflib_jsonld.parser import to_rdf
+# from rdflib_jsonld.parser import to_rdf
+from rdflib.plugins.parsers.jsonld import to_rdf
+
+# from rdflib.jsonld.parser import to_rdf
+
+# from rdflib.
 
 from . import context
 
 from .utils import pull, get_user_agent, scrub_doi
 
+## setup logging ----------------------------------------------------
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("charset_normalizer").setLevel(logging.WARNING)
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s',
+    datefmt='%d/%b/%Y %H:%M:%S' )
+logger = logging.getLogger( '__name__' )
+
+
 doi_prefix = 'http://dx.doi.org/'
 
 
-def get_crossref_rdf(doi):
+def get_crossref_rdf( doi ):
+    logger.info( 'starting get_crossref_rdf()' )
+    logger.debug( f'doi, ``{doi}``')
+    assert type(doi) == str
     if doi.startswith(doi_prefix):
         pass
     else:
         doi = doi_prefix + doi
+    logger.debug( f'doi is now, ``{doi}``')
     h = {'Accept': 'application/rdf+xml'}
     ua = get_user_agent()
     h.update(ua)
+    logger.debug( f'full-headers are now, ``{h}``' )
     handle = requests.get(doi, headers=h)
-    print(handle.request.headers)
+    logger.debug( f'handle, ``{handle}``' )
+    # print(handle.request.headers)
     try:
-        graph = Graph().parse(data=handle.text)
+        graph = Graph().parse(data=handle.text, format='xml')
+        logger.debug( f'graph after Graph().parse..., ``{graph}``' )
     except Exception as e:
-        logger.info("Bad DOI:" + doi + "\n" + e)
+        logger.debug( "Bad DOI:" + doi + "\n" + repr(e) )
+        logger.exception( 'failure getting graph' )
         return
+    logger.debug( f'final graph returned, ```{graph}```' )
     return graph
 
 def get_citeproc(doi):
@@ -224,7 +250,7 @@ def by_openurl(ourl_params, email):
     }
     #Add incoming parameters
     payload.update(ourl_params)
-    logger.debug("CrossRef url {} with params {}".format(cr_url, json.dumps(payload)))
+    logger.debug("CrossRef url ``{}`` with params ``{}``".format(cr_url, json.dumps(payload)))
     resp = requests.get(cr_url, params=payload)
     try:
         root = ET.fromstring(resp.text.encode('utf-8', 'ignore'))
